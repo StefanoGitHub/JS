@@ -1,0 +1,1 @@
+var text = "'This space intentionally left blank.'"; console.log(text);
