@@ -1,0 +1,19 @@
+{
+  "name": "Scraper",
+  "version": "1.0.0",
+  "description": "A simple scraper for Wikipedia that will figure out who was born and died on the current day",
+  "main": "scraper.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+      "url": "https://github.com/StefanoGitHub/JS/ITC298/1_Intro_to_node/lab_scraper.git"
+  },
+  "author": "Stefano Borghi",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^0.19.0",
+    "request": "^1.9.9"
+  }
+}
