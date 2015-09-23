@@ -1,0 +1,19 @@
+{
+  "name": "Grep",
+  "version": "1.0.0",
+  "description": "Search through a set of files for a given string.",
+  "main": "grep.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/StefanoGitHub/JS/ITC298/2_async/lab_grep.git"
+  },
+  "author": "Stefano Borghi",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^1.4.2",
+    "byline": "^4.2.1"
+  }
+}

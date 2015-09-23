@@ -1,0 +1,692 @@
+<!doctype html>
+<!--[if IE 9]><html class="ie9"><![endif]-->
+<!--[if gt IE 9]><!--><html><!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1, maximum-scale=1" />
+    <title>Thomas Wilburn dot Net</title>
+    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,900' rel='stylesheet' 
+    type='text/css'>
+    <style>
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Lato", verdana, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #222;
+  text-rendering: optimizeLegibility;
+  font-weight: 400;
+}
+a {
+  color: #789;
+  text-decoration: none;
+}
+a:visited {
+  color: #89A;
+}
+a:hover {
+  color: #345;
+}
+a img {
+  border: none;
+}
+header {
+  padding: 2em 0;
+  background-image: radial-gradient(#f8f8f8, #e8e8e8);
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+@media (max-device-width: 600px) {
+  header {
+    padding: 2em 1em;
+  }
+}
+header > * {
+  max-width: 400px;
+  margin: 0 auto;
+}
+header h1 {
+  font-weight: 700px;
+  font-size: 48px;
+  margin: 0px;
+}
+header .hello-image {
+  float: right;
+  margin-bottom: 1em;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+header .bio {
+  clear: both;
+}
+header .large {
+  font-size: 200%;
+}
+section {
+  padding: 3em 0 2em 0;
+  position: relative;
+  overflow: hidden;
+}
+@media (max-device-width: 600px) {
+  section {
+    padding-top: 5em;
+  }
+}
+section h2 {
+  color: white;
+  position: absolute;
+  top: -40px;
+  left: 0;
+  padding: 0;
+  margin: 0;
+  font-weight: bold;
+  font-size: 80px;
+  white-space: pre;
+  text-transform: lowercase;
+}
+section ul {
+  padding: 0;
+  margin: 0;
+}
+section.software {
+  background: #464D53;
+}
+section.dataviz {
+  background: #423635;
+}
+section.writing {
+  background: #352E36;
+}
+.card {
+  max-width: 600px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  border: 1px solid #EEE;
+  background: white;
+  color: #444;
+  box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.3);
+  padding: 8px 16px;
+  z-index: 99;
+  position: relative;
+  -webkit-transform-origin: center;
+  transform-origin: center;
+  transition: -webkit-transform 0.5s ease-in-out;
+  transition: transform 0.5s ease-in-out;
+  -webkit-transform: perspective(1000px) rotateX(0deg);
+  transform: perspective(1000px) rotateX(0deg);
+}
+@media (max-device-width: 600px) {
+  .card {
+    margin: 0 8px 20px 8px;
+  }
+}
+li.card {
+  list-style-type: none;
+}
+.card h3 {
+  padding: 8px 0;
+  margin: 0;
+  border-bottom: 1px solid #EEE;
+  font-weight: normal;
+  font-size: 20px;
+}
+.card .description {
+  display: flex;
+  padding-top: 1em;
+}
+@media (max-device-width: 600px) {
+  .card .description {
+    display: block;
+  }
+}
+.card .icon {
+  flex-shrink: 0;
+  margin: 0 1em 0 0;
+}
+@media (max-device-width: 600px) {
+  .card .icon {
+    float: left;
+  }
+}
+.card .icon img {
+  border: 1px solid #EEE;
+}
+.card p {
+  padding: 0;
+  margin: 0;
+}
+ul.card {
+  display: block;
+}
+ul.card li {
+  margin-left: 20px;
+  margin-bottom: 1em;
+  display: block;
+}
+.card cite {
+  display: block;
+  font-size: 90%;
+  font-style: normal;
+}
+footer {
+  text-align: center;
+  padding: 1em 0 3em 0;
+}
+/* scroll effects */
+.up .card,
+.down .card {
+  transition: -webkit-transform 0.2s ease-in-out;
+  transition: -ms-transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out;
+}
+.up .card {
+  -webkit-transform: perspective(1000px) rotateX(-2deg) translateY(8px);
+  -moz-transform: perspective(1000px) rotateX(-2deg) translateY(8px);
+  -ms-transform: perspective(1000px) rotateX(-2deg) translateY(8px);
+}
+.up.fast .card {
+  -webkit-transform: perspective(1000px) rotateX(-4deg) translateY(16px);
+  -moz-transform: perspective(1000px) rotateX(-4deg) translateY(16px);
+  -ms-transform: perspective(1000px) rotateX(-4deg) translateY(16px);
+}
+.down .card {
+  -webkit-transform: perspective(1000px) rotateX(2deg) translateY(-8px);
+  -moz-transform: perspective(1000px) rotateX(2deg) translateY(-8px);
+  -ms-transform: perspective(1000px) rotateX(2deg) translateY(-8px);
+}
+.down.fast .card {
+  -webkit-transform: perspective(1000px) rotateX(4deg) translateY(-16px);
+  -moz-transform: perspective(1000px) rotateX(4deg) translateY(-16px);
+  -ms-transform: perspective(1000px) rotateX(4deg) translateY(-16px);
+}
+
+    </style>
+</head>
+<body>
+<header class="about">
+  <div class="hello">
+      <img src="portrait.jpg" class="hello-image" width=120 height=180>
+      <h1>Hi.</h1>
+
+      <p>
+      <span class="large">I'm Thomas Wilburn,</span><br/>
+      and this is my web site.
+      </p>
+  </div>
+  <div class="bio">
+
+      <p>
+      
+          I'm a data journalist for the <a href="http://seattletimes.com">Seattle Times</a>. I
+          also <a href="/scc">teach classes on JavaScript and web development</a> at <a
+          href="http://seattlecentral.edu">Seattle Central College</a>, and I'm the Director of
+          Interactive Media for <a href="http://urbanartistry.org">Urban Artistry</a>.
+          
+      </p>
+      
+      <p>
+          
+          I've been a guest lecturer at <a href="http://washington.edu">The University of
+          Washington</a>, worked at <a href="http://arena.net">ArenaNet</a> (makers of <i>Guild
+          Wars 2</i>) and <a href="http://bigfishgames.com">Big Fish Games</a>, ran the Multimedia
+          Team at <a  href="http://cqrollcall.com">Congressional Quarterly</a>, and produced
+          educational audio  and video for the <a href="http://wbi.worldbank.org/wbi/">World Bank
+          Institute</a>.
+      
+      </p>
+
+      <p>
+      
+          In my spare time, I'm a <a href="http://www.fourstringriot.com">bassist</a>, a <a
+          href="http://www.urbanartistry.org">b-boy</a>, and a <a
+          href="http://www.milezero.org">blogger</a>. I like sandwiches, dogs, and lists with three
+          items in them.
+      
+      </p>
+
+      <p>
+      You can see samples of my work, sorted into <br/>
+      <a href="#software" class="large scroll">software development</a>,<br/>
+      <a href="#dataviz" class="large scroll">data visualization</a>, and <br/>
+      <a href="#writing" class="large scroll">writing</a>,<br/>
+      or check out some of my current projects at my <a href="http://github.com/thomaswilburn">GitHub repository</a>.
+      </p>
+
+      <p>
+      Send questions, comments, and badly-spelled junk mail to: <a id="mailto" href=""></a>
+      </p>
+  </div>
+</header>
+
+<div class="content">
+
+    <section class="dataviz">
+      <h2 id="dataviz">Data Visualization</h2>
+      <ul>
+          
+          <li class="card">
+            <h3>
+              <a href="http://projects.seattletimes.com/2015/chambers-bay/">
+                Touring Chambers Bay
+              </a>
+            </h3>
+            <div class="description">
+              <a href="http://projects.seattletimes.com/2015/chambers-bay/" class="icon">
+                <img src="/source/multimedia/chambers-bay-icon.jpg">
+              </a>
+                <p>
+                  The site of the US Open in 2015, Chambers Bay is not a typical American golf course. To demonstrate its steep verticality and unconventional hazards, I <a href="http://dev.seattletimes.com/2015/06/18-holes-in-150000-polygons-a-topographic-map-for-the-u-s-open/">loaded the course architect's CAD file into Three.js</a> and created this interactive tour, including hole-by-hole descriptions and video.
+            </div>
+          </li>
+          
+          <li class="card">
+            <h3>
+              <a href="http://www.seattletimes.com/seattle-news/live-updates-from-may-day-seattle/">
+                Mayday Map
+              </a>
+            </h3>
+            <div class="description">
+              <a href="http://www.seattletimes.com/seattle-news/live-updates-from-may-day-seattle/" class="icon">
+                <img src="/source/multimedia/mayday-map-icon.jpg">
+              </a>
+                <p>
+                  Seattle's May Day "celebration" is always a unique news opportunity. To help readers follow the protests, I <a href="http://dev.seattletimes.com/2015/05/may-day-mayhem-how-we-covered-seattles-protests/">built a Node.js app that attached to the Twitter streaming API</a> and tracked reporters via geotagging on a map, including photo and video. The result was a riveting live feed of movement between protestors and police.
+            </div>
+          </li>
+          
+          <li class="card">
+            <h3>
+              <a href="http://www.seattletimes.com/business/real-estate/buffetts-mobile-home-business-has-most-to-gain-from-deregulation-plan/">
+                The Mobile Home Trap
+              </a>
+            </h3>
+            <div class="description">
+              <a href="http://www.seattletimes.com/business/real-estate/buffetts-mobile-home-business-has-most-to-gain-from-deregulation-plan/" class="icon">
+                <img src="/source/multimedia/mobile-homes-icon.jpg">
+              </a>
+                <p>
+                  For this investigative series, the Seattle Times examined the shady business practices of the Warren Buffett-owned Clayton Homes. This particular piece detailed how proposed legislation would largely exempt Clayton's loans from regulations. For my interactive, I tried to highlight the effects of that change on the market, and show how the law would barely affect other mobile home vendors.
+            </div>
+          </li>
+          
+          <li class="card">
+            <h3>
+              <a href="http://projects.seattletimes.com/2014/prison-labor/1/">
+                Sell Block
+              </a>
+            </h3>
+            <div class="description">
+              <a href="http://projects.seattletimes.com/2014/prison-labor/1/" class="icon">
+                <img src="/source/multimedia/prison-labor-icon.jpg">
+              </a>
+                <p>
+                  Another enterprise Seattle Times investigation, this piece focused on the broken promises of the Washington State prison labor industry. I worked on the visualizations for this piece, including the logo design. But it's most interesting to me because it serves as the debut for two new custom elements &mdash; <a href="https://github.com/seattletimes/responsive-frame">&lt;responsive-frame&gt;</a> for embedding elements, and <a href="https://github.com/seattletimes/component-leaflet-map">&lt;leaflet-map&gt;</a> for assembling the state map.
+            </div>
+          </li>
+          
+          <li class="card">
+            <h3>
+              <a href="http://projects.seattletimes.com/2014/loaded-with-lead/1/">
+                Loaded with Lead
+              </a>
+            </h3>
+            <div class="description">
+              <a href="http://projects.seattletimes.com/2014/loaded-with-lead/1/" class="icon">
+                <img src="/source/multimedia/loaded-with-lead.jpg">
+              </a>
+                <p>
+                  The culmination of a year-long investigative effort, I worked on all the interactive elements for this story about lead poisoning at gun ranges in Washington State and around the country. In addition to the header and page design, I worked on the string-of-pearls chart, the interactive maps, and the cutaway diagram of Wade's shooting range. Our design was featured in a Q&A with the <a href="http://www.snd.org/2014/11/the-guts-seattle-times-project-lets-users-leave-fingerprints/">Society for News Design</a>.
+            </div>
+          </li>
+          
+          <li class="card">
+            <h3>
+              <a href="http://projects.seattletimes.com/2014/election">
+                Election 2014
+              </a>
+            </h3>
+            <div class="description">
+              <a href="http://projects.seattletimes.com/2014/election" class="icon">
+                <img src="/source/multimedia/election-2014.jpg">
+              </a>
+                <p>
+                  For the mid-term election, I built a scraper for the Washington Secretary of State and King County data feeds, as well as a results page with embedded maps and bar graphs of the results. The maps in particular are interesting, being built as custom elements (a first for a news organization, as far as I'm aware). The backend for this project was developed in public, and is available <a href="https://github.com/seattletimes/elections-2014">on GitHub</a>.
+            </div>
+          </li>
+          
+          <li class="card">
+            <h3>
+              <a href="http://projects.seattletimes.com/2014/bidding-wars">
+                Bidding Wars
+              </a>
+            </h3>
+            <div class="description">
+              <a href="http://projects.seattletimes.com/2014/bidding-wars" class="icon">
+                <img src="/source/multimedia/bidding-wars.jpg">
+              </a>
+                <p>
+                  When a Times business reporter showed me his "heat map" of where Seattle house-hunters face the toughest competition, I knew it could be a dynamite interactive graphic. Built on Angular, this page lets users search for a neighborhood, filter by city, and find out just how badly they'll probably need to overbid in order to buy a new home. Source code for this interactive is available <a href="https://github.com/seattletimes/bidding-wars">on GitHub</a>.
+            </div>
+          </li>
+          
+          <li class="card">
+            <h3>
+              <a href="http://projects.seattletimes.com/2015/hawks-fan-map">
+                Where in the World are Seahawks Fans?
+              </a>
+            </h3>
+            <div class="description">
+              <a href="http://projects.seattletimes.com/2015/hawks-fan-map" class="icon">
+                <img src="/source/multimedia/hawks-fan-map.jpg">
+              </a>
+                <p>
+                  In 2013, the Seattle Times put out a "fan map" built on Google Fusion Tables, letting Seahawks fans tag themselves around the globe. It was a success, but we wanted something more scalable for 2014. The new version has marker clustering, AJAX form submission, and a much more polished look-and-feel. It also successfully leveraged our news app template, and the ability to use Google Docs as an ad-hoc CMS.
+            </div>
+          </li>
+          
+          <li class="card">
+            <h3>
+              <a href="http://projects.seattletimes.com/2014/building-toward-disaster">
+                Building Toward Disaster
+              </a>
+            </h3>
+            <div class="description">
+              <a href="http://projects.seattletimes.com/2014/building-toward-disaster" class="icon">
+                <img src="/source/multimedia/landslide.jpg">
+              </a>
+                <p>
+                  This Seattle Times interactive was designed to let readers explore more than 80 years of history leading up to the 2014 Oso landslide that killed 43 people. Reporters gathered 13 aerial photos dating back to 1933, as well as data on all of the houses, logging, red flags, and attempted fixes for the hill. I arranged the timeline vertically, which makes it easier to scroll on desktop and mobile, and linked its progress to the photos so that readers could flip through them and watch the river gradually eat away at the base of the hill.
+            </div>
+          </li>
+          <!-- needle -->
+          <li class="card">
+            <h3>
+              <a href="http://innovation.cq.com/pub/against_the_grain/index.php">
+                Against the Grain
+              </a>
+            </h3>
+            <div class="description">
+              <a href="http://innovation.cq.com/pub/against_the_grain/index.php" class="icon">
+                <img src="/source/multimedia/against-the-grain-icon.jpg">
+              </a>
+                <p>
+                  In this project, the CQ newsroom wanted to understand legislators who vote against the party line--why do they go "against the grain?" What kinds of votes garner the most dissent? To let people browse through our database of party unity votes, we built this web application in object-oriented Javascript and HTML. As readers move through the data, new panels will open to the right, but they can return to an earlier fork in their search at any time. This interactive was a powerful experiment, not just as a standalone interactive, but also as an exploration of new UI for CQ's extensive (but cumbersome) vote database.
+            </div>
+          </li>
+          
+          <li class="card">
+            <h3>
+              <a href="http://innovation.cq.com/media/debt_components/?ref=CQ">
+                Who Owns the Debt?
+              </a>
+            </h3>
+            <div class="description">
+              <a href="http://innovation.cq.com/media/debt_components/?ref=CQ" class="icon">
+                <img src="/source/multimedia/components-icon.jpg">
+              </a>
+                <p>
+                  As the debt limit debate neared its deadline, my team at CQ produced several graphics on the history of the debate, past attempts to raise the limit, and the composition of the debt in question. In this interactive, built in HTML/JavaScript, we pulled apart the components of the debt to see just what was owed to whom. It was featured, along with its companion, on the front page of the <a href="http://www.economist.com/blogs/dailychart/2011/07/federal-debt">Economist's web site</a>.
+            </div>
+          </li>
+          
+      </ul>
+    </section>
+    
+    <section class="software">
+      <h2 id="software">Software Development</h2>
+      <ul>
+          
+          <li class="card">
+            <h3>
+              <a href="http://arena.net">
+                ArenaNet
+              </a>
+            </h3>
+            <div class="description">
+              <a href="http://arena.net" class="icon">
+                  <img src="/source/code/arena.png">
+              </a>
+              <p>
+                  You could argue that it's as much as web company as a game company &mdash; certainly the thousands of lines of JavaScript in its services cloud can speak to that. At ArenaNet, I wrote front- and back-end code for our NodeJS-like platform, including the marketing, account infrastructure, and developer APIs. I also worked on improvements to the in-game UI for <i>Guild Wars 2</i>, the company's award-winning MMO, which is partially embedded in a web view and uses cutting-edge, single-page application technology.
+            </div>
+          </li>
+          
+          <li class="card">
+            <h3>
+              <a href="/caret">
+                Caret
+              </a>
+            </h3>
+            <div class="description">
+              <a href="/caret" class="icon">
+                  <img src="/source/code/caret-icon.jpg">
+              </a>
+              <p>
+                  In 2013, I bought a Chromebook and was shocked to discover that there wasn't a good offline 
+text editor available for Chrome OS, so I built one myself. Caret is a professional-grade 
+tabbed text editor built around the <a href="http://ace.c9.io">Ace editing component</a>. It 
+features fully-configurable menus and keybindings, open file memory, a command/go-to 
+palette, and more. It's the best offline editor available on Chrome OS, and it's 
+battle-tested--every version since 0.0.16 has been written in Caret, and it's been used by 
+members of the Chromium team to work on the browser itself.
+            </div>
+          </li>
+          
+          <li class="card">
+            <h3>
+              <a href="https://github.com/thomaswilburn/weir">
+                Weir
+              </a>
+            </h3>
+            <div class="description">
+              <a href="https://github.com/thomaswilburn/weir" class="icon">
+                  <img src="/source/code/weir-icon.jpg">
+              </a>
+              <p>
+                  In the wake of the Google Reader shutdown announcement, I decided to try writing my own self-hosted RSS reader before I would move to another third-party service. Weir was completed right before the deadline, and I've been using it since. It's written in Node and PostgreSQL for the server-side components and Angular on the front-end, and it boasts a fully-responsive design for viewing on phones or desktop machines alike.
+            </div>
+          </li>
+          
+          <li class="card">
+            <h3>
+              <a href="http://seattlecentral.edu">
+                Seattle Central College
+              </a>
+            </h3>
+            <div class="description">
+              <a href="http://seattlecentral.edu" class="icon">
+                  <img src="/source/code/sccc.jpg">
+              </a>
+              <p>
+                  At CQ, I had often trained journalists as part of my multimedia team, but when my wife and I moved to Seattle I decided to take the next step, and began teaching classes in JavaScript and web development at <a href="http://seattlecentral.edu">Seattle Central College</a>. As always, teaching others is a great way to really learn a topic yourself, and I've learned quite a bit. I'm also working with the full-time faculty to shape and improve the curriculum for front-end development.
+            </div>
+          </li>
+          
+          <li class="card">
+            <h3>
+              <a href="http://bigfishgames.com/unlimited">
+                Big Fish Unlimited
+              </a>
+            </h3>
+            <div class="description">
+              <a href="http://bigfishgames.com/unlimited" class="icon">
+                  <img src="/source/code/bfg.jpg">
+              </a>
+              <p>
+                  In 2012, I spent about a year working for Big Fish Games in Seattle on their Big Fish Unlimited streaming service. I rebuilt the MVC framework that supported the site (laying the groundwork for future BFG properties), designed the responsive framework used to present it on any form factor (desktop, tablet, and mobile), and wrote all the JavaScript in AMD modules (a first for Big Fish). The JavaScript made heavy use of pub/sub events, allowing us to decouple the native or plugin layer that did the actual streaming on each device from the display logic on the rest of the page.
+            </div>
+          </li>
+          
+          <li class="card">
+            <h3>
+              <a href="https://market.android.com/details?id=org.npr.android.news">
+                NPR for Android
+              </a>
+            </h3>
+            <div class="description">
+              <a href="https://market.android.com/details?id=org.npr.android.news" class="icon">
+                  <img src="/source/multimedia/npr-icon.jpg">
+              </a>
+              <p>
+                  In my spare time, starting in 2009, I started contributing to NPR's open-source Android client, primarily by splitting the playback function apart from the UI code. This helped lay the groundwork for the 2.0 version of the application, and it makes the application much more Android-friendly for users. Working with NPR and Google on this application was a fantastic learning experience for source control, code review, and mobile application design.
+            </div>
+          </li>
+          
+          <li class="card">
+            <h3>
+              <a href="http://urbanartistry.org">
+                Urban Artistry
+              </a>
+            </h3>
+            <div class="description">
+              <a href="http://urbanartistry.org" class="icon">
+                  <img src="/source/code/ua-icon.jpg">
+              </a>
+              <p>
+                  As the Director of Interactive Media for Urban Artistry, a non-profit dance company based in Maryland, I'm responsible for our online presence. People interested in UA may be accessing the Internet primarily on mobile devices or older hardware, particularly those who are coming to our events. So when we got a chance to redesign the site for a cleaner, more modern look, I took the opportunity to write a completely custom WordPress theme that is responsive and fast, but still runs effectively in legacy browsers. The look and feel is inspired by our logo, which combines evocative whitespace with a bold red splash.
+            </div>
+          </li>
+          
+      </ul>
+    </section>
+
+    <section class="writing">
+      <h2 id="writing">Writing</h2>
+      <ul class="card">
+          
+          <li>
+              <a
+              
+                href="https://source.opennews.org/en-US/articles/tag-soup-using-custom-elements-cover-elections/"
+              
+              >Tag Soup</a>
+              <cite>An article detailing our use of custom elements at the Seattle Times for the Knight-Mozilla OpenNews blog....</cite>
+          </li>
+          
+          <li>
+              <a
+              
+                href="http://arstechnica.com/articles/paedia/The-AudioFile-basicsof-uncompressed-digital-audio.ars"
+              
+              >The AudioFile, Part One</a>
+              <cite>Originally published at <a href="http://arstechnica.com/articles/paedia/The-AudioFile-basicsof-uncompressed-digital-audio.ars">Ars Technica</a>, September 18, 2007...</cite>
+          </li>
+          
+          <li>
+              <a
+              
+                href="http://arstechnica.com/articles/paedia/the-audiofile-understanding-mp3-compression.ars"
+              
+              >The AudioFile, Part Two</a>
+              <cite>Originally published at <a href="http://arstechnica.com/articles/paedia/the-audiofile-understanding-mp3-compression.ars">Ars Technica</a>, October 3, 2007...</cite>
+          </li>
+          
+          <li>
+              <a
+              
+                href="http://arstechnica.com/old/content/2007/11/audiofile-analog-to-digital-conversion.ars"
+              
+              >The AudioFile, Part Three</a>
+              <cite>Originally published at <a href="http://arstechnica.com/old/content/2007/11/audiofile-analog-to-digital-conversion.ars">Ars Technica</a>, November 11, 2007...</cite>
+          </li>
+          
+          <li>
+              <a
+              
+                href="http://www.escapistmagazine.com/issue/15/4"
+              
+              >Guns, Gangs, and Greed</a>
+              <cite>Originally published in <a href=http://www.escapistmagazine.com/issue/15/4>The Escapist</a>, October 2005...</cite>
+          </li>
+          
+          <li>
+              <a
+              
+                href="http://www.escapistmagazine.com/issue/49/3"
+              
+              >How China Cheats at the Videogame Industry</a>
+              <cite>First published in <a href="http://www.escapistmagazine.com/issue/49/3">The Escapist</a>, Issue #49...</cite>
+          </li>
+          
+          <li>
+              <a
+              
+                href="http://thomaswilburn.github.io/textbook"
+              
+              >JavaScript for the Web Savvy</a>
+              <cite>A textbook all about JavaScript, written for my classes at SCCC....</cite>
+          </li>
+          
+          <li>
+              <a
+              
+                href="/source/writing/nvamag_0406.pdf"
+              
+              >Not Your Mother's Mason</a>
+              <cite>Originally printed in <a href="http://www.northernvirginiamag.com">Northern Virginia Magazine</a>, May 2006...</cite>
+          </li>
+          
+          <li>
+              <a
+              
+                href="http://arstechnica.com/news.ars/post/20070912-of-mice-and-mines-trained-rats-search-for-explosives-tuberculosis.html"
+              
+              >Of Mice and Mines</a>
+              <cite>Originally published at <a href="http://arstechnica.com/news.ars/post/20070912-of-mice-and-mines-trained-rats-search-for-explosives-tuberculosis.html">Ars Technica</a>, September 12, 2007...</cite>
+          </li>
+          
+      </ul>
+    </section>
+
+    <footer data-background="white">
+      <i class="closing"><img src="/bluechop.jpg"><br>this space intentionally left blank.</i>
+    </footer>
+
+</div>
+<script>
+var lastScroll = document.body.scrollTop || document.documentElement.scrollTop;
+var timeout;
+var body = document.body;
+if (window.matchMedia && matchMedia("(min-device-width: 600px)").matches) {
+  window.addEventListener("scroll", function() {
+    var scroll = document.body.scrollTop || document.documentElement.scrollTop;
+    var delta = scroll - lastScroll;
+    if (delta < 0) {
+      if (body.className.indexOf("up") == -1) body.className = "up";
+    } else {
+      if (body.className.indexOf("down") == -1) body.className = "down";
+    }
+    if (Math.abs(delta) > 80 && body.className.indexOf("fast") == -1) {
+      body.className += " fast";
+    }
+    lastScroll = scroll;
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(function() {
+      body.className = "";
+    }, 100);
+  });
+}
+
+var qsa = function(s) { return Array.prototype.slice.call(document.querySelectorAll(s)) };
+
+//obfuscated e-mail address (for what that's worth)
+var charset = "abcdefghijklmnopqrstuvwxyz.@";
+var cipher = [13, 4, 22, 18, 27, 19, 7, 14, 12, 0, 18, 22, 8, 11, 1, 20,
+17, 13, 26, 13, 4, 19];
+
+var mailto = "";
+for (var i = 0; i < cipher.length; i++) {
+    mailto += charset.charAt(cipher[i]);
+}
+var link = document.getElementById("mailto");
+link.setAttribute('href', "mailto:" + mailto);
+link.innerHTML = mailto;
+
+</script>
+</body>
+</html>

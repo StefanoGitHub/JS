@@ -1,0 +1,19 @@
+{
+  "name": "Async",
+  "version": "1.0.0",
+  "description": "asynchronous examples",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/StefanoGitHub/JS/ITC298/2_async.git"
+  },
+  "author": "Stefano Borghi",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^1.4.2",
+    "request": "^2.63.0"
+  }
+}

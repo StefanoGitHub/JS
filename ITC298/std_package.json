@@ -1,0 +1,17 @@
+{
+  "name": "",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+      "url": "https://github.com/StefanoGitHub/JS/ITC298/.git"
+  },
+  "author": "Stefano Borghi",
+  "license": "ISC",
+  "dependencies": {
+    }
+}
