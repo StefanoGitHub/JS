@@ -1,3 +1,5 @@
+//scraper.js
+
 var request = require('request'); // library for downloading web pages by URL
 var cheerio = require('cheerio'); // jQuery implementation for the server
 var fs = require("fs");
@@ -30,7 +32,7 @@ request(pageAddress, function (error, response, body) {
             bornList += '\t' + $(this).find('a').first().text() + '\n';
         } else {
             bornList += '\t' + $(this).find('a').eq(1).text() + '\n';
-        }
+        }  
     });
     console.log(bornList);
 
