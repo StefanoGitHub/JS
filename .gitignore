@@ -4,12 +4,16 @@
 # MAC OSX system files
 #-----------------------------------------
 
+/itc298-materials/
+
 .DS_Store
 .AppleDouble
 .DS_Store?
 .LSOverride
 .Trashes
 
+# PHPStorm project files#
+/.idea/
 
 # Icon must end with two \r #
 Icon
@@ -25,7 +29,6 @@ Thumbs.db
 .fseventsd
 .Spotlight-V100
 .TemporaryItems
-.Trashes
 .VolumeIcon.icns
 
 # Directories potentially created on remote AFP share #

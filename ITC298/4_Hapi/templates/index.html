@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pizza</title>
+    </head>
+
+    <body>
+        
+        <span class="login">Hello,  {{user}}</span>
+        <h1>Welcome to Pizza Shack</h1>
+        
+        <form action="/order" method="POST">
+            <input name="pizza">
+            <select name="size">
+                <option alue="L">Large</option>
+                <option value="S">Small</option>
+            </select>
+            <label for="phone">Phone number</label>
+            <input name="phone">
+            <input type="submit">
+        </form>
+        
+        <ul id="pizzas">
+            {{#each pizzas}}
+            <li>{{pizza}} - {{phone}}</li>
+            {{/each}}
+        </ul>
+
+        
+    </body>
+</html>

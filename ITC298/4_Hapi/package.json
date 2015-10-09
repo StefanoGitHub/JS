@@ -1,0 +1,20 @@
+{
+  "name": "Hapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/StefanoGitHub/JS/ITC298/4_Hapi.git"
+  },
+  "author": "Stefano Borghi",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^1.4.2",
+    "handlebars": "^4.0.3",
+    "hapi": "^8.4.0"
+  }
+}
