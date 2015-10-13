@@ -35,22 +35,22 @@ var getWelcomePage = function(request, reply) {
 };
 
 var getList = function(request, reply) {
-    var section = request.path.slice(1);
+    var section = request.params.section;
     var sectionFile = section+".json";
     fs.readFile(sectionFile, "utf8", function(err, data) {
         if (err) { throw err }
-        var listContent = JSON.parse(data);
+        var sectionContent = JSON.parse(data);
         reply.view("list.html", {
             section: section,
             title: (section == 'music') ? 'My CDs' : 'My ' + section,
-            items: listContent
+            items: sectionContent
         });
     });
 };
 
 var getItem = function(request, reply) {
     var itemNumber = request.params.itemNumber;
-    var section = request.path.split('/')[1];
+    var section = request.params.section;
     var itemsFile = section+".json";
     fs.readFile(itemsFile, "utf8", function(err, data) {
         if (err) { throw err }
@@ -70,17 +70,11 @@ var getItem = function(request, reply) {
     });
 };
 
-
 server.route([
     { method: "GET", path: "/", handler: getWelcomePage } ,
-    { method: "GET", path: "/books", handler: getList },
-    { method: "GET", path: "/movies", handler: getList },
-    { method: "GET", path: "/music", handler: getList },
-    { method: "GET", path: "/books/{itemNumber}", handler: getItem },
-    { method: "GET", path: "/movies/{itemNumber}", handler: getItem },
-    { method: "GET", path: "/music/{itemNumber}", handler: getItem }
+    { method: "GET", path: "/{section}", handler: getList },
+    { method: "GET", path: "/{section}/{itemNumber}", handler: getItem }
 ]);
-
 
 server.route({ 
     method: "GET", 
