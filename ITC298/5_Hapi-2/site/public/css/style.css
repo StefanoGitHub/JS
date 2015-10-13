@@ -1,0 +1,26 @@
+body {
+    font-family: sans-serif;
+}
+
+nav {
+    padding: 0.5em 0;
+}
+
+nav a {
+    text-decoration: none;
+    border-bottom: 1px dotted black;
+    color: black;
+}
+
+img {
+    height: 300px;
+    margin: auto;
+}
+
+aside {
+    float: right;
+}
+
+a.popup {
+    font-style: italic;
+}

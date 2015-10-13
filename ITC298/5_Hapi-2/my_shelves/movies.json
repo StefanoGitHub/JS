@@ -1,0 +1,54 @@
+[
+    { 
+        "title": "Breaveheart", 
+        "director": "Mel Gibson", 
+        "cover": "braveheart.jpg", 
+        "url": "braveheart",
+        "metaData": {
+            "duration": "2h, 58min",
+            "year": "1995", 
+            "genre": "Military & War, Drama",
+            "studio": "Paramount",
+            "starring": "Mel Gibson, James Robinson, Sean Lawlor"
+        } 
+    },
+    { 
+        "title": "Die Hard", 
+        "director": "John McTiernan", 
+        "cover": "die_hard.jpg", 
+        "url": "die_hard",
+        "metaData": {
+            "duration": "2h, 13min",
+            "year": "1988", 
+            "genre": "Thriller, Action",
+            "studio": "20th Century Fox",
+            "starring": "Bruce Willis, Bonnie Bedelia"
+        } 
+    },
+    { 
+        "title": "The Incredibles", 
+        "director": "Brad Bird", 
+        "cover": "the_incredibles.jpg", 
+        "url": "the_incredibles",
+        "metaData": {
+            "duration": "1h, 56min",
+            "year": "2004", 
+            "genre": "Adventure, Action, Kids & Family",
+            "studio": "Pixar",
+            "starring": "Craig T. Nelson, Holly Hunter"
+        }  
+    },
+    { 
+        "title": "Forrest Gump", 
+        "director": "Robert Zemeckis", 
+        "cover": "forrest_gump.jpg", 
+        "url": "forrest_gump",
+        "metaData": {
+            "duration": "2h, 23min",
+            "year": "1994", 
+            "genre": "Drama, Romance",
+            "studio": "Paramount",
+            "starring": "Tom Hanks, Rebecca Williams"
+        }  
+    }
+]

@@ -1,0 +1,54 @@
+[
+    { 
+        "title": "Buon compleanno Elvis", 
+        "artist": "Luciano Ligabue", 
+        "cover": "ligabue.jpg", 
+        "url": "ligabue",
+        "metaData": {
+            "tracks": "14",
+            "year": "1995", 
+            "genre": "Rock",
+            "label": "Warner Italy",
+            "trackList": [
+                "Vivo Morto O X",
+                "Seduto in Riva Al Fosso",
+                "Buon Compleanno, Elvis!",
+                "La Forza Della Banda",
+                "Hai Un Momento, Dio?",
+                "Rane a Rubiera Blues",
+                "Certe Notti",
+                "Viva!",
+                "I Ragazzi Sono in Giro",
+                "Quella Che Non Sei",
+                "Non Dovete Badare Al Cantante",
+                "Un Figlio Di Nome Elvis",
+                "Il Cielo Vuoto O Il Cielo Pieno",
+                "Leggero"
+            ]
+        }
+    },
+    {
+        "title": "Back in Black", 
+        "artist": "AC/DC", 
+        "cover": "acdc.jpg", 
+        "url": "acdc", 
+        "metaData": {
+            "tracks": "10",
+            "year": "1980", 
+            "genre": "Hard Rock",
+            "label": "Epic",
+            "trackList": [
+                "Hells Bells",
+                "Shoot To Thrill",
+                "What Do You Do For Money Honey",
+                "Givin The Dog A Bone",
+                "Let Me Put My Love Into You",
+                "Back In Black",
+                "You Shook Me All Night Long",
+                "Have A Drink On Me",
+                "Shake A Leg",
+                "Rock And Roll Ain't Noise Pollution"
+            ]
+        }
+    }
+]

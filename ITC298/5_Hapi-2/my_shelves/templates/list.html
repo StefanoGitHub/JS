@@ -1,0 +1,26 @@
+<h1>{{title}}</h1>
+<table>
+    {{#items}}
+        <tr>
+            <td>
+                <a href="{{../section}}/{{@index}}" >
+                    <img class="list" src="/assets/images/{{cover}}">
+                </a>
+            </td>
+            <td>
+                <a href="{{../section}}/{{@index}}" >
+                    Title: <b>{{title}}</b> <br>
+                    {{#if artist}}
+                        Artist: <b>{{artist}}</b> <br>
+                    {{/if}}
+                    {{#if author}}
+                        Author: <b>{{author}}</b> <br>
+                    {{/if}}
+                    {{#if director}}
+                        Director: <b>{{director}}</b> <br>
+                    {{/if}}
+                </a>
+            </td>
+        </tr>
+    {{/items}}
+</table>

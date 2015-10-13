@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ title }}</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="/assets/css/style.css">
+    </head>
+
+    <body>
+        {{#admin}}
+        <b>YOU ARE LOGGED IN AS ADMIN</b>
+        {{/admin}}
+        
+        <h1>Stefano</h1>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/classes">Classes</a>
+            <a href="mailto:stefano.borghi@gmx.com">eMail</a>
+        </nav>
+        
+        <!-- content -->
+        
+        {{! three curly braces to avoid escaping html injected into content}}
+        {{{ content }}}
+        
+        <!-- end content -->
+        <footer>
+            <div id="date"></div>
+        </footer>
+        <script type="text/javascript" >
+            var year = new Date().getFullYear();
+            document.getElementById('date').innerHTML = '&copy;' + year;
+        </script>
+    </body>
+</html>

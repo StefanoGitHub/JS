@@ -1,0 +1,12 @@
+Original release date: <b>{{itemData.metaData.year}}</b> <br> 
+Tracks: <b>{{itemData.metaData.tracks}}</b> <br>
+Genre: <b>{{itemData.metaData.genre}}</b> <br>
+Label: <b>{{itemData.metaData.label}}</b> <br>
+<br>
+Track list: 
+<ol>
+    {{#each itemData.metaData.trackList}}
+    <li>{{this}}</li>
+    {{/each}}
+</ol>
+

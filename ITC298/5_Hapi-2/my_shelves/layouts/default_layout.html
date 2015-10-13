@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ title }}</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="/assets/css/style.css">
+        <link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/icon" >
+    </head>
+
+    <body>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/books">Books</a>
+            <a href="/music">Music</a>
+            <a href="/movies">Movies</a>
+        </nav>
+        
+        <!-- injected content -->
+        
+        {{{ content }}}
+        
+        <!-- end content -->
+        
+        <footer id="footer">Ste.b_O</footer>
+        <script type="text/javascript" >
+            var year = new Date().getFullYear();
+            document.getElementById('footer').innerHTML += ' &copy;' + year;
+        </script>
+    </body>
+</html>

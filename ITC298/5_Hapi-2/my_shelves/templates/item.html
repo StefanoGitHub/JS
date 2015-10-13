@@ -1,0 +1,34 @@
+<h1>{{itemData.title}}</h1>
+<table class="item">
+        <tr>
+            <td class="toTop">
+                <img class="big" src="/assets/images/{{itemData.cover}}">
+            </td>
+            <td>
+                Title: <b>{{itemData.title}}</b> <br>
+                
+                {{#if itemData.artist}}
+                    Artist: <b>{{itemData.artist}}</b> <br>
+                {{/if}}
+                {{#if itemData.author}}
+                    By: <b>{{itemData.author}}</b> <br>
+                {{/if}}
+                {{#if itemData.director}}
+                    Director: <b>{{itemData.director}}</b> <br>
+                {{/if}}
+                
+                {{#if book}}
+                    {{> book_partial}}
+                {{/if}}
+                {{#if CD}}
+                    {{> CD_partial}}
+                {{/if}}
+                {{#if movie}}
+                    {{> movie_partial}}
+                {{/if}}
+                
+            </td>
+        </tr>
+</table>
+<div class="contact"><a href="mailto:stefanoborghi@gmxcom">Request this item</a></div>
+<a class="back" href="/{{section}}">Back</a>

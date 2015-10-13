@@ -1,0 +1,38 @@
+[
+    { 
+        "title": "The power of the dog", 
+        "author": "Don Winslow", 
+        "cover": "power_dog.jpg", 
+        "url": "power_dog", 
+        "metaData": {
+            "year": "2005", 
+            "pages": "560",
+            "genre": "Fiction, Thrillers",
+            "ISBN": "978-1400096930"
+        } 
+    },
+    { 
+      "title": "Eye of the needle", 
+        "author": "Ken Follett", 
+        "cover": "eye_needle.jpg", 
+        "url": "eye_needle", 
+        "metaData": {
+            "year": "1978", 
+            "pages": "464",
+            "genre": "Spy fiction, Thrillers",
+            "ISBN": "978-0062020895"
+        }  
+    },
+    { 
+        "title": "The Lord of the Rings", 
+        "author": "J.R.R. Tolkien", 
+        "cover": "lotr.jpg", 
+        "url": "lotr", 
+        "metaData": {
+            "year": "1954", 
+            "pages": "1178",
+            "genre": "Fantasy, Classic",
+            "ISBN": "978-0618640157"
+        } 
+    }
+]

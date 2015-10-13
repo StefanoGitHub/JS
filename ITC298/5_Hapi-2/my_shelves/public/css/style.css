@@ -1,0 +1,80 @@
+body {
+    font-family: sans-serif;
+    width: 80%;
+    margin: 0 auto;
+    background-color: azure;
+    padding: 0 2em;
+}
+
+nav {
+    padding: 0.5em 0;
+    margin: 1em 0;
+
+}
+a {
+    text-decoration: none;
+    color: lightseagreen;
+}
+a:hover {
+    font-style: oblique;
+}
+nav a {
+    padding: 0 1em;
+    border-right: 1px solid black;
+}
+nav a:last-child {
+    border-right: none;
+}
+nav a:hover {
+    font-weight: bolder;
+    font-style: normal;
+    font-size: 1.2em;
+}
+
+img {
+    width: 100px;
+    padding: 1px;
+    border: 1px solid grey;
+}
+img.list:hover {
+    opacity: .8;
+}
+img.big {
+    width: 200px;
+}
+
+td {
+    padding: 0 1em;
+}
+td.toTop{
+    vertical-align: top;
+}
+table.item {
+    margin-bottom: 2em;
+}
+.back {
+    margin: 3em 0;
+    font-size: .8em;
+}
+.contact {
+    margin: 2em 0;
+    font-size: 1.5em;
+}
+
+ol {
+    font-size: 0.85em;
+    margin: .5em  10px;
+    padding: 0 15px;
+}
+ol li {
+    padding-left: 5px;
+}
+
+footer {
+    font-size: .7em;
+    font-style: italic;
+    float: right;
+    position: static;
+    bottom: 0;
+    padding: 4em 4em 2em;
+}

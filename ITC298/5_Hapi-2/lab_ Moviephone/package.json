@@ -1,0 +1,19 @@
+{
+  "name": "Moviephone",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+      "url": "https://github.com/StefanoGitHub/JS/ITC298/5_Hapi-2/lab_Moviephone.git"
+  },
+  "author": "Stefano Borghi",
+  "license": "ISC",
+  "dependencies": {
+    "handlebars": "^4.0.3",
+    "hapi": "^8.4.0"
+  }
+}

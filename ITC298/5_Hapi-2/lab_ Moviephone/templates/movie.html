@@ -1,0 +1,20 @@
+<h1>{{movie.title}}</h1>
+<table class="movie">
+        <tr>
+            <td>
+                <img class="big" src="{{movie.poster}}">
+            </td>
+            <td>
+                Length: <br>
+                <b>{{movie.length}}minutes</b> <br>
+                <br>
+                Starring: <br>
+                <ul>
+                    {{#movie.starring}} 
+                        <li><b>{{this}}</b></li>
+                    {{/movie.starring}}
+                </ul>
+            </td>
+        </tr>
+</table>
+<a class="back" href="/">Back</a>
