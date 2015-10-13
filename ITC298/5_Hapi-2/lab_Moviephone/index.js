@@ -10,9 +10,15 @@ var fs = require("fs");
 
 var server = new hapi.Server();
 server.connection({ port: 8000 });
-server.start(function(){
-    console.log('Server running')
-    console.info(server.info);
+
+var movieList = [];
+fs.readFile("movies.json", "utf8", function(err, data) {
+    if (err) { throw err }
+    movieList = JSON.parse(data).movies;
+    server.start(function(){
+        console.log('Server running')
+        console.info(server.info);
+    });
 });
 
 server.views({
@@ -26,29 +32,19 @@ server.views({
 });
 
 var getHomePage = function(request, reply) {
-    fs.readFile("movies.json", "utf8", function(err, data) {
-        if (err) { throw err }
-        var movieList = JSON.parse(data);
-        reply.view("index.html", {
-                movieList: movieList,
-                pageTitle: "Cinema",
-                title: "Neighbourhood Cinema"
-            }
-        );
-    });
+    reply.view("index.html", {
+            movieList: movieList,
+            pageTitle: "Cinema",
+            title: "Neighbourhood Cinema"
+        });
 }
 
 var getMovie = function(request, reply) {
     var index = request.params.index;
-    fs.readFile("movies.json", "utf8", function(err, data) {
-        if (err) { throw err }
-        var movieList = JSON.parse(data);
-        reply.view("movie.html", {
-                movie: movieList.movies[index],
-                pageTitle: "Selected movie"
-            }
-        );
-    });
+    reply.view("movie.html", {
+            movie: movieList[index],
+            pageTitle: movieList[index].title
+        });
 };
 
 
