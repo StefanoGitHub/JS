@@ -1,0 +1,9 @@
+1. First step install global version:
+    $ (sudo) npm install grunt-cli -g
+
+2. Install local version (inside project folder):
+    $ npm install grunt --save
+
+3. Create Gruntfile.js in project folder
+
+4. Register the tasks in that file

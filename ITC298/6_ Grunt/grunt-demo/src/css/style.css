@@ -1,0 +1,9 @@
+/*  
+    original: src/css/style.css 
+    final: build/css/style.css
+*/
+
+body {
+    color: blue;
+    transform: translateX(100px);
+}
