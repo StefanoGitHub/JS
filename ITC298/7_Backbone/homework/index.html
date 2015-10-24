@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Backbone.js</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+
+        <div id="galacticScale"></div>
+        
+
+
+        <script type="text/html" src="" id="scale-template">
+            <p>Your fat cat's weight:</p>
+            <input id="input"> kg <br>
+            <span>(Sorry guys from US and ex British Empire colonies, <br> but the universe has been measured with the metric system...)</span>
+
+            <p>How much would he weight on...?</p>
+            <button class="planet" id="mercury" data-planet="mercury">Mercury</button>
+            <button class="planet" id="venus" data-planet="venus">Venus</button>
+            <button class="planet" id="mars" data-planet="mars">Mars</button>
+            <button class="planet" id="moon" data-planet="moon">Moon</button>
+
+            <h1 class="output"><%=result%></h1>
+
+            <img src="images/<%=image%>" alt="<%=description%>" title="<%=description%>">
+
+        </script>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.3/backbone-min.js"></script>
+
+        <script type="text/javascript" src="js/bundle.js">//browserified (watchified) files</script>
+
+    </body>
+</html>

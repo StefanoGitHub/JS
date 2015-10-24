@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Backbone.js</title>
+<!--        <link rel="stylesheet" href="/assets/css/style.css">-->
+    </head>
+    <body>
+
+        Body
+                
+        <script type="text/html" src="" id="hello-template">
+        
+            <div>
+                Hello, <%= name %>!
+            </div>
+            
+        </script>
+            
+        <!-- got from https://cdnjs.com -->
+        <!-- order counts -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+
+        <script type="text/javascript">
+            //get the content of html sript and convert it to a template function
+            var template = _.template( $("#hello-template").html() );
+            
+            var output = template({
+                name: "Stefano"
+            })
+            console.log(output);
+        </script>
+
+    </body>
+</html>

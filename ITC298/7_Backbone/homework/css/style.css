@@ -1,0 +1,17 @@
+body {
+    width: 70%;
+    margin: 0 auto;
+    text-align: center;
+}
+img {
+    height: 250px;
+}
+
+span {
+    font-size: .7em;
+    display: block;
+}
+
+button {
+    background: none;
+}
