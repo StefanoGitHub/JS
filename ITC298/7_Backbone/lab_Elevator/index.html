@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Elevator</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+
+        <div id="elevator"></div>
+
+        <script type="text/html" id="elevator-template">
+
+            <div class="display"><h1><span><%=direction%></span> <%=currentFloor%></h1></div>
+
+            <div class="button_row">
+                <button class="floor" id="9" data-floor="9" data-selected="<%= (selectedFloor == 9) ? 'selected' : '' %>">9</button>
+                <button class="floor" id="8" data-floor="8" data-selected="<%= (selectedFloor == 8) ? 'selected' : '' %>">8</button>
+                <button class="floor" id="7" data-floor="7" data-selected="<%= (selectedFloor == 7) ? 'selected' : '' %>">7</button>
+            </div>
+            <div class="button_row">
+                <button class="floor" id="6" data-floor="6" data-selected="<%= (selectedFloor == 6) ? 'selected' : '' %>">6</button>
+                <button class="floor" id="5" data-floor="5" data-selected="<%= (selectedFloor == 5) ? 'selected' : '' %>">5</button>
+                <button class="floor" id="4" data-floor="4" data-selected="<%= (selectedFloor == 4) ? 'selected' : '' %>">4</button>
+            </div>
+            <div class="button_row">
+                <button class="floor" id="3" data-floor="3" data-selected="<%= (selectedFloor == 3) ? 'selected' : '' %>">3</button>
+                <button class="floor" id="2" data-floor="2" data-selected="<%= (selectedFloor == 2) ? 'selected' : '' %>">2</button>
+                <button class="floor" id="1" data-floor="1" data-selected="<%= (selectedFloor == 1) ? 'selected' : '' %>">1</button>
+            </div>
+            <div class="button_row">
+                <button class="floor" id="0" data-floor="0" data-selected="<%= (selectedFloor == 0) ? 'selected' : '' %>">0</button>
+            </div>
+
+            <div class="doors"><h3>Doors <%=doors%></h3></div>
+
+        </script>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.3/backbone-min.js"></script>
+
+        <script type="text/javascript" src="js/bundle.js">//browserified (watchified) script</script>
+
+    </body>
+</html>
+

@@ -1,0 +1,17 @@
+{
+  "name": "Elevator_panel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bundle.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/StefanoGitHub/JS/ITC298/7_Backbone/lab_Elevator.git"
+  },
+  "author": "Stefano Borghi",
+  "license": "ISC",
+  "dependencies": {
+  }
+}
