@@ -23,7 +23,7 @@ server.route({
         console.log(request.params);
         reply("Hello " + name + " from Hapi.js! " + counter);
     }
-})
+});
 
 server.route({
     method: "GET",
@@ -33,4 +33,4 @@ server.route({
         var id = request.params.id;
         reply(name + " | " + id);
     }
-})
+});
