@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>uChat</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/public/css/style.css">
+    <!--<link rel="stylesheet" href="../public/css/style.css">-->
+    <link rel="shortcut icon" href="/public/images/favicon.ico" type="image/icon" >
+</head>
+
+<body>
+    <script type="text/html" id="chat-template">
+        <div id="chat">
+
+            <div id="chat_history">
+                <%=chat_history%>
+            </div>
+            <div id="chat_input_panel">
+                    <textarea id="msg_area" rows="3" placeholder="type your message" autofocus required></textarea>
+                    <button id="send" type="button">Send</button>
+            </div>
+        </div>
+    </script>
+
+    <h1><span id="uChat">uChat</span> messenger</h1>
+
+    <div id="chat_body"></div>
+
+
+    <footer id="footer">Ste.b_O &copy;</footer>
+    <script type="text/javascript" >
+        var year = new Date().getFullYear();
+        document.getElementById('footer').innerHTML += year;
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.3/backbone-min.js"></script>
+
+    <script type="text/javascript" src="/public/js/bundle.js">//browserified (watchified) script</script>
+    <!--<script type="text/javascript" src="../public/js/bundle.js">//browserified (watchified) script</script>-->
+    <script src="//localhost:35729/livereload.js"></script>
+</body>
+</html>

@@ -55,7 +55,7 @@ module.exports = function(grunt) {
             dev: {
                 expand: true,
                 flatten: true,
-                // Targetc file(s)
+                // Target file(s)
                 src: "src/css/**/*.css",
                 dest: "build/css/"
             }

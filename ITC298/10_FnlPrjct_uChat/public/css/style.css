@@ -1,0 +1,55 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    width: 80%;
+    margin: 0 auto;
+    padding: 0 2em;
+    font: 1em arial, sans-serif;
+    text-align: center;
+}
+h1 {
+    font-size: 1em;
+    margin: 1em;
+}
+#uChat {
+    font-size: 3em;
+    color: dodgerblue;
+}
+span {
+    font-size: 1em;
+}
+#chat_body {
+    width: 80%;
+    min-width: 300px;
+    margin: 0 auto;
+}
+#chat_input_panel {
+    width: 60%;
+    margin: 0 auto;
+}
+#chat_history {
+    border: 1px solid grey;
+    width: 60%;
+    margin: 0 auto;
+    height: 300px;
+    overflow: hidden;
+}
+#msg_area {
+    width: 100%;
+    margin: .5em auto;
+    font: .8em arial, sans-serif;
+}
+#input_form {
+    width: 100%;
+    margin: 0 auto;
+}
+footer{
+    float: right;
+    position: absolute;
+    bottom: 5%;
+    right: 15%;
+    font: small-caption;
+    color: slategrey;
+}
