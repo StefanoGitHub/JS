@@ -19,13 +19,13 @@ var ChatModel = Backbone.Model.extend({
         this.set('chat_history', fromDB);
     },
 */
-    updateHistory: function (newMessage) {
-        //here the code to update the history of the chat
-        var chat_history = this.get('chat_history');
-        //console.log(chat_history);
-        var updatedHistory =  chat_history + '<br>' + newMessage;
-        this.set('chat_history', updatedHistory);
-    },
+    //updateHistory: function (newMessage) {
+    //    //here the code to update the history of the chat
+    //    var chat_history = this.get('chat_history');
+    //    //console.log(chat_history);
+    //    var updatedHistory =  chat_history + '<br>' + newMessage;
+    //    this.set('chat_history', updatedHistory);
+    //},
     getConnectedUsers: function () {
         //here the code to list all connected users
         this.set('inRoom', "you");
@@ -45,25 +45,25 @@ var ChatView = Backbone.View.extend({
     el: "#chat_body",
     initialize: function() {
         //set a refresh of the page upon changes of result
-        this.listenTo(this.model, "change:chat_history", this.render);
+        //this.listenTo(this.model, "change:chat_history", this.render);
     },
     template: _.template( $("#chat-template").html() ),
     events: {
-        "click #send": "send_msg"
+        //"click #send": ""
     },
     render: function() {
         var model = this.model.toJSON();
         var html = this.template(model);
         this.$el.html(html);
-    },
-    send_msg: function(e) {
-        //get message from the user
-        var message = $(e.view.$('#msg_area')).val();
-        //console.log(message);
-        //clear the textarea
-        $(e.view.$('#msg_area')).val('');
-        this.model.updateHistory(message);
-    }
+    }//,
+    //send_msg: function(e) {
+    //    //get message from the user
+    //    var message = $(e.view.$('#msg_area')).val();
+    //    //console.log(message);
+    //    //clear the textarea
+    //    $(e.view.$('#msg_area')).val('');
+    //    this.model.updateHistory(message);
+    //}
 });
 
 module.exports = ChatView;

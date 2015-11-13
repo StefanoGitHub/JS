@@ -18,13 +18,13 @@ var ChatModel = Backbone.Model.extend({
         this.set('chat_history', fromDB);
     },
 */
-    updateHistory: function (newMessage) {
-        //here the code to update the history of the chat
-        var chat_history = this.get('chat_history');
-        //console.log(chat_history);
-        var updatedHistory =  chat_history + '<br>' + newMessage;
-        this.set('chat_history', updatedHistory);
-    },
+    //updateHistory: function (newMessage) {
+    //    //here the code to update the history of the chat
+    //    var chat_history = this.get('chat_history');
+    //    //console.log(chat_history);
+    //    var updatedHistory =  chat_history + '<br>' + newMessage;
+    //    this.set('chat_history', updatedHistory);
+    //},
     getConnectedUsers: function () {
         //here the code to list all connected users
         this.set('inRoom', "you");

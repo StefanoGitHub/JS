@@ -39,7 +39,7 @@ module.exports = function(grunt) {
             },
             bundle: {
                 //any html
-                files: "public/js/bundle.js",
+                files: ["public/js/bundle.js", "*.js", "css/*.css"],
                 //no tasks -> just live reload
                 tasks: []
             },
