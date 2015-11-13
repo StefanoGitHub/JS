@@ -34,7 +34,7 @@ span {
     width: 60%;
     margin: 0 auto;
     height: 300px;
-    overflow: hidden;
+    overflow-y: scroll;
 }
 #msg_area {
     width: 100%;
@@ -46,11 +46,10 @@ span {
     margin: 0 auto;
 }
 footer{
-    float: right;
-    position: absolute;
-    bottom: 5%;
-    right: 15%;
     font: small-caption;
+    width: 100%;
+    text-align: right;
+    padding: 3em 0;
     color: slategrey;
 }
 #messages { list-style-type: none; margin: 0; padding: 0; }

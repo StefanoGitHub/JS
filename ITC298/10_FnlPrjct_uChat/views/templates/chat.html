@@ -1,5 +1,6 @@
 <script type="text/html" id="chat-template">
     <div id="chat">
+        <div id="welcome">Welcome <span id="username">{{username}}</span>! You are now connected</div>
         <div id="chat_history">
             <%=chat_history%>
             <ul id="messages"></ul>
@@ -7,13 +8,9 @@
         <div id="chat_input_panel">
             <form id="chat-form" action="">
                 <textarea id="msg_area" rows="3" placeholder="type your message" autofocus required></textarea>
-                <!--<input id="m" autocomplete="off" /><button>Send</button>-->
                 <button id="send" type="submit">Send</button>
             </form>
         </div>
     </div>
+    <button id="logout">log out</button>
 </script>
-
-<h1><span id="uChat">uChat</span> messenger</h1>
-
-<div id="chat_body"></div>
