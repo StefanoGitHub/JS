@@ -1,8 +1,9 @@
 <script type="text/html" id="chat-template">
     <div id="chat">
-        <div id="welcome">Welcome <span id="username">{{username}}</span>! You are now connected</div>
-        <div id="chat_history">
-            <%=chat_history%>
+        <div id="welcome">Welcome <span id="username">{{username}}</span>! <br>
+            You are now connected</div>
+        <div id="chat_content">
+            <span id="chat_history">{{chat_history}}</span>
             <ul id="messages"></ul>
         </div>
         <div id="chat_input_panel">
@@ -13,4 +14,8 @@
         </div>
     </div>
     <button id="logout">log out</button>
+
+    <button id="save-chat">save chat</button>
+    <button id="delete-chat">delete chat</button>
+
 </script>

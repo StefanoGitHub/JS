@@ -4,6 +4,7 @@
 //main.js
 
 //require view and module
+
 var ChatView = require('./chatView.js');
 var ChatModel = require('./chatModel.js');
 

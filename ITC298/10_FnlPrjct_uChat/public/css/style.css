@@ -5,33 +5,44 @@
 body {
     width: 80%;
     margin: 0 auto;
-    padding: 0 2em;
+    max-width: 600px;
+    min-width: 240px;
+    /*padding: 0 2em;*/
     font: 1em arial, sans-serif;
     text-align: center;
 }
 h1 {
+    min-width: 230px;
     font-size: 1em;
-    margin: 1em;
+    margin: 1em 0 .5em;
+}
+input {
+    display:block;
+    margin: .5em auto;
 }
 #uChat {
     font-size: 3em;
     color: dodgerblue;
 }
 span {
-    font-size: 1em;
+    color: dodgerblue;
 }
-#chat_body {
-    width: 80%;
-    min-width: 300px;
-    margin: 0 auto;
+#welcome {
+    font-size: .8em;
+    margin: 0 0 1.5em;
 }
+/*#chat_body {*/
+    /*width: 80%;*/
+    /*min-width: 300px;*/
+    /*margin: 0 auto;*/
+/*}*/
 #chat_input_panel {
-    width: 60%;
+    /*width: 60%;*/
     margin: 0 auto;
 }
-#chat_history {
+#chat_content {
     border: 1px solid grey;
-    width: 60%;
+    /*width: 60%;*/
     margin: 0 auto;
     height: 300px;
     overflow-y: scroll;
@@ -41,13 +52,15 @@ span {
     margin: .5em auto;
     font: .8em arial, sans-serif;
 }
-#input_form {
-    width: 100%;
-    margin: 0 auto;
-}
+/*#input-form {*/
+    /*width: 100%;*/
+    /*margin: 0 auto;*/
+/*}*/
 footer{
     font: small-caption;
     width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
     text-align: right;
     padding: 3em 0;
     color: slategrey;
@@ -55,3 +68,11 @@ footer{
 #messages { list-style-type: none; margin: 0; padding: 0; }
 #messages li { padding: 5px 10px; }
 #messages li:nth-child(odd) { background: lightgrey; }
+
+
+/****** dynamic style ******/
+@media screen and (max-width : 490px) {
+
+
+}
+

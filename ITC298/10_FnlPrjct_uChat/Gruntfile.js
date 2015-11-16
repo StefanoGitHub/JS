@@ -31,6 +31,7 @@ module.exports = function(grunt) {
 
         watch: {
             //watch performs defined tasks whenever changes are saved in matching files
+/*
             html: {
                 //any html
                 files: "views/*.html",
@@ -43,12 +44,21 @@ module.exports = function(grunt) {
                 //no tasks -> just live reload
                 tasks: []
             },
-            js: {
+ */
+            hapi: {
                 //any html
-                files: "public/js/src/*.js",
+                files: [ "public/js/main.js", "public/js/chatView.js", "public/js/chatModel.js"],
                 //no tasks -> just live reload
                 tasks: ["browserify"]
             },
+
+            everythingelse: {
+                //any html
+                files: [ "public/css/*.css", "views/**/*.html", "*.js", "handlers/*.js" ],
+                //no tasks -> just live reload
+                tasks: []
+            },
+
             //option valid for all targets
             options: { livereload: true }
         },
@@ -56,7 +66,7 @@ module.exports = function(grunt) {
         browserify: {
             //browserify generates a single js file from the different js files in the js/src/ folder
             dist: {
-                src: "public/js/src/main.js",
+                src: "public/js/main.js",
                 dest: "public/js/bundle.js"
             }
         }

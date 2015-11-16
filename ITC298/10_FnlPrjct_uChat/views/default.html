@@ -3,8 +3,8 @@
 <head>
     <title>{{pageTitle}}</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="/public/css/style.css">
-    <!--<link rel="stylesheet" href="../public/css/style.css">-->
     <link rel="shortcut icon" href="/public/images/favicon.ico" type="image/icon" >
 </head>
 
@@ -46,8 +46,20 @@
             window.location.replace("/login");
             socket.disconnect(user); //should use username to disconnect only him/her
         });
+
+        $('#save-chat').on('click', function(){
+
+        });
+
+        $('#delete-chat').on('click', function(){
+
+        });
+
         $('#signin').on('click', function(){
             window.location.replace("/signin");
+        });
+        $('#login').on('click', function(){
+            window.location.replace("/login");
         });
     </script>
 
