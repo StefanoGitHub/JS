@@ -46,18 +46,22 @@ server.route([
 //set up the socket io
 var io = require('socket.io')(server.listener);
 io.on('connection', function(socket){
-    console.log('a user connected');
-    io.emit('chat message', 'a user connected');
-    socket.on('disconnect', function(user){
-        console.log('a user disconnected');
-        io.emit('chat message', 'a user disconnected');
-        if (user) {
 
-            /************************* HERE USER IS NOT RIGHT !!!!  **********************************/
-
-            db.deleteSession(user);
-        }
+    socket.on('userConnection', function(username) {
+        console.log(username, ' connected');
+        io.emit('chat message', username + ' joined the conversation');
     });
+
+    socket.on('userDisconnection', function(username){
+        console.log(username, ' disconnected');
+        io.emit('chat message', username + ' left the conversation');
+        socket.disconnect();
+
+        /************* how to delete cookies? otherwise when is sent to login it is still authenticated ***************/
+
+        //db.deleteSession(user);
+    });
+
     socket.on('chat message', function(msg){
         io.emit('chat message', msg);
         //console.log('message: ' + msg);

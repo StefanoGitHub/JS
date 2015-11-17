@@ -32,19 +32,32 @@
     <script type="text/javascript" src="/public/js/bundle.js">//browserified (watchified) script</script>
     <script>
         var socket = io();
+
+
+        var username = $('#user').html();
+        console.log('user jQuery: ', username);
+        if (username) {
+            // var sessionID = user.attr("data-session");
+            socket.emit("userConnection", username); //, sessionID: sessionID });
+            console.log('user from client: ', username);
+        }
+
         $('#chat-form').submit(function(){
             socket.emit('chat message', $('#msg_area').val());
             $('#msg_area').val('');
             return false;
         });
+
         socket.on('chat message', function(msg){
             $('#messages').append($('<li>').text(msg));
         });
+
         $('#logout').on('click', function(){
-            var user = $('#username').val();
-            console.log('disconnect');
-            window.location.replace("/login");
-            socket.disconnect(user); //should use username to disconnect only him/her
+            //var user = $('#username').val();
+            console.log(username, 'userDisconnection');
+            socket.emit('userDisconnection', username);
+            //window.location.replace("/login");
+            //socket.disconnect(); //should use username to disconnect only him/her
         });
 
         $('#save-chat').on('click', function(){

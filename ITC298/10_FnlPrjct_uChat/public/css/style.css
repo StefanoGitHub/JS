@@ -56,6 +56,12 @@ span {
     /*width: 100%;*/
     /*margin: 0 auto;*/
 /*}*/
+#notification {
+    font-size: .8em;
+    font-style: oblique;
+    color: orangered;
+    padding: .5em 0;
+}
 footer{
     font: small-caption;
     width: 100%;

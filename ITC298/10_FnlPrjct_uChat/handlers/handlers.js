@@ -5,91 +5,149 @@
 var db = require("../db");
 var async = require('async');
 
-//var PWD = db.connection.prepare("SELECT pwd FROM t_users WHERE username = $username;");
-
 module.exports = {
 
     checkSession: function (req, reply) {
         var page = req.params.page;
+        var identity = req.state.identity;
+
         switch (page) {
 
             case "login":
-                reply.view("login.html", { pageTitle: "uChat log-in" });
+                if (identity == 'authenticated') {
+                    reply.redirect("/uChat");
+                } else {
+                    reply.view("login.html", {
+                        pageTitle: "uChat log-in",
+                        notification: ''
+                    });
+                }
                 break;
 
             case "signin":
-                reply.view("signin.html", { pageTitle: "uChat sign-in" });
+                reply.view("signin.html", {
+                    pageTitle: "uChat sign-in",
+                    notification: ''
+                });
+                break;
+
+            case "uChat":
+                if (identity == 'authenticated') {
+                    var userName = req.state.username;
+                    var sessionID = req.state.sessionID;
+
+                    reply.view("chat.html", {
+                        pageTitle: "uChat",
+                        username: userName,
+                        sessionID: sessionID
+                    });
+                } else {
+                    reply.redirect("/login");
+                    //db.getSession({
+                    //    $username: userName
+                    //}, function (err, result) {
+                    //    if (err) {
+                    //        console.log('Error');
+                    //    }
+                    //    //console.log("result: ", result);
+                    //    if (!result || result.sessionID != sessionID) {
+                    //        //console.log("err: ", err);
+                    //        reply.redirect("/login");
+                    //    } else {
+                    //        reply.view("chat.html", {
+                    //            pageTitle: "uChat",
+                    //            username: userName,
+                    //            sessionID: sessionID
+                    //        });
+                    //    }
+                    //});
+                }
                 break;
 
             default:
-                db.getSession({
-                    $username: req.state.username
-                }, function (err, result) {
-                    if (err) {
-                        console.log('Error');
-                    }
-                    //console.log("result: ", result);
-                    if (!result || result.sessionID != req.state.sessionID) {
-                        //console.log("err: ", err);
-                        reply.redirect("/login");
-                    } else {
-                        reply.view("chat.html", { pageTitle: "uChat", username: req.state.username });
-                    }
-                });
+                reply.redirect("/login");
                 break;
 
         }
     },
 
     signin: function (req, reply) {
+        //pwd & email & username are required in the form, no need to check if not null
         var newUserName = req.payload.username;
         var pwd = req.payload.pwd;
         var email = req.payload.email;
 
-        if (pwd && email && newUserName) {
-
-            var ID = String(Date.now());
-            reply.state("username", newUserName);
-            reply.state("sessionID", ID);
-
-            async.waterfall([
-                    /****************** need to implement check if user is already in db *******/
+        //verify if user already exists
+        db.getUser({
+                $username: newUserName
+            }, function (err, dataFromDB) {
+            if (err) {
+                throw err;
+            }
+            if (!dataFromDB) {
+                //create sessionID
+                var sessionID = String(Date.now());
+                async.waterfall([
+                        /****************** need to implement check if user is already in db *******/
+                            function (done) {
+                            db.insertUser({
+                                $username: newUserName,
+                                $pwd: pwd,
+                                $email: email
+                            }, function () {
+                                //console.log("new user inserted");
+                                done();
+                            });
+                        },
                         function (done) {
-                        db.insertUser({
-                            $username: newUserName,
-                            $pwd: pwd,
-                            $email: email
-                        }, function () {
-                            //console.log("new user inserted");
-                            done();
-                        });
-                    },
-                    function (done) {
-                        db.insertSession({
-                            $username: newUserName,
-                            $sessionID: ID
-                        }, function () {
-                            //console.log("session inserted");
-                            done();
-                        });
-                    }],
-                function (err) {
-                    if (err) {
-                        console.log('Error');
-                    }
-                    reply.view("chat.html", {pageTitle: "uChat", username: newUserName});
+                            db.insertSession({
+                                $username: newUserName,
+                                $sessionID: sessionID
+                            }, function () {
+                                //console.log("session inserted");
+                                done();
+                            });
+                        }],
+                    function (err) {
+                        if (err) {
+                            console.log('Error');
+                        }
+                        //set cookies
+                        reply.state("username", newUserName);
+                        reply.state("sessionID", sessionID);
+                        reply.state("identity", 'authenticated');
+
+                        //reply.view("chat.html", {
+                        //    pageTitle: "uChat",
+                        //    username: newUserName,
+                        //    sessionID: sessionID
+                        //});
+                        reply.redirect("/uChat");
+                    });
+            } else {
+                //if user already in DB notify
+                reply.view("signin.html", {
+                    pageTitle: "uChat sign-in",
+                    notification: 'User already exists, just log-in!'
                 });
-        } else {
-            reply.redirect("/signin");
-        }
+            }
+        });
     },
 
     login: function (req, reply) {
+        //pwd & username are required in the form, no need to check if not null
         var username = req.payload.username;
         var pwd = req.payload.pwd;
+        //console.log('login username:', username);
 
-        if (pwd && username) {
-            db.getPassword({
+        console.log('request.state[username]', req.state[username]);
+
+        //if authenticated redirect
+        var identity = req.state.identity;
+        if (identity == 'authenticated') {
+            reply.redirect("/uChat");
+        } else {
+            db.getUser({
                 $username: username
             }, function (err, dataFromDB) {
                 if (err) {
@@ -99,32 +157,45 @@ module.exports = {
                 //console.log('pwd:', dataFromDB);
 
                 if (!dataFromDB) {
-                    reply.redirect("/signin");
+                    //reply.redirect("/signin");
+                    reply.view("login.html", {
+                        pageTitle: "uChat log-in",
+                        notification: 'User not registered, please Sign-in.'
+                    });
                 } else {
                     if (pwd == dataFromDB.pwd) {
-                        //var response = reply("Worked!");
-                        var ID = String(Date.now());
-                        reply.state("username", username);
-                        reply.state("sessionID", ID);
-
+                        //create sessionID
+                        var sessionID = String(Date.now());
                         //clear previous session data (the whole row where the data is stored)
-                        db.deleteSession(username, function () {
+                        db.deleteSession({
+                            $username: username
+                        }, function () {
                             //save the new session ID
                             db.insertSession({
                                 $username: username,
-                                $sessionID: ID
+                                $sessionID: sessionID
                             }, function () {
-                                reply.view("chat.html", {pageTitle: "uChat", username: username});
+                                //reply.view("chat.html", {
+                                //    pageTitle: "uChat",
+                                //    username: username,
+                                //    sessionID: sessionID
+                                //});
+                                //set/update cookies
+                                reply.state("username", username);
+                                reply.state("sessionID", sessionID);
+                                reply.state("identity", 'authenticated');
+                                reply.redirect("/uChat");
                             });
-                            //return reply.redirect("/uChat");
                         })
                     } else {
-                        reply.redirect("/login");
+                        //reply.redirect("/login");
+                        reply.view("login.html", {
+                            pageTitle: "uChat log-in",
+                            notification: 'Username or Password not correct'
+                        });
                     }
                 }
             });
-        } else {
-            reply.redirect("/login");
         }
     }
 

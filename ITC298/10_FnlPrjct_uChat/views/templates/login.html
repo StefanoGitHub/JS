@@ -1,7 +1,10 @@
 <script type="text/html" id="chat-template">
+
+    <div id="notification">{{notification}}</div>
+
     <form id="input-form" method=POST>
-        <input name=username placeholder=username>
-        <input name=pwd placeholder=password>
+        <input name=username placeholder=username required>
+        <input name=pwd placeholder=password required>
         <input type=submit value="log-in">
     </form>
     <button id="signin">sign-in</button>
