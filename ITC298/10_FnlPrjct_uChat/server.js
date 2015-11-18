@@ -23,7 +23,7 @@ server.views({
 //setup the database
 var db = require("./db");
 //call the function (from db handler file) which create/connect the database
-//the callback passed to that function, called once the db is actually ready, will start the server
+//the callback passed to tsocket.emit('saveChat', username);socket.emit('saveChat', username);hat function, called once the db is actually ready, will start the server
 db.init(function() {
     console.log("DB ready");
 
@@ -49,17 +49,34 @@ io.on('connection', function(socket){
 
     socket.on('userConnection', function(username) {
         console.log(username, ' connected');
+
+        //here update usersConnected list
+
         io.emit('chat message', username + ' joined the conversation');
     });
 
     socket.on('userDisconnection', function(username){
         console.log(username, ' disconnected');
         io.emit('chat message', username + ' left the conversation');
-        socket.disconnect();
+        //socket.disconnect();
 
         /************* how to delete cookies? otherwise when is sent to login it is still authenticated ***************/
 
         //db.deleteSession(user);
+    });
+
+    socket.on('saveChat', function(chatData) {
+        //console.log('chatData:', chatData);
+
+        db.saveChatHistory(chatData, function () {
+        console.log('chat saved 3');
+        io.emit('chat message', 'chat saved!');
+        //io.emit('chat saved', 'chat saved!'); //here should popup a message "chat saved"
+        });
+
+        //db.getChatHistory(chatData.username, function (historyFromDB) {
+        //    console.log('historyFromDB', historyFromDB);
+        //});
     });
 
     socket.on('chat message', function(msg){

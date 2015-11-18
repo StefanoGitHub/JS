@@ -35,11 +35,9 @@
 
 
         var username = $('#user').html();
-        console.log('user jQuery: ', username);
         if (username) {
             // var sessionID = user.attr("data-session");
             socket.emit("userConnection", username); //, sessionID: sessionID });
-            console.log('user from client: ', username);
         }
 
         $('#chat-form').submit(function(){
@@ -61,10 +59,15 @@
         });
 
         $('#save-chat').on('click', function(){
-
+            var newMessages = ($('#messages').html()) ? $('#messages').html() : '';
+            console.log('username:', username, 'newMessages:', newMessages);
+            socket.emit('saveChat', {
+                username: username,
+                newMessages: newMessages
+            });
         });
 
-        $('#delete-chat').on('click', function(){
+        $('#delete-chat').on('click', function(username){
 
         });
 
