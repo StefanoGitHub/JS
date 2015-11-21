@@ -26,6 +26,7 @@ input {
 }
 span {
     color: dodgerblue;
+    font-weight: bold;
 }
 #welcome {
     font-size: .8em;
@@ -39,6 +40,17 @@ span {
 #chat_input_panel {
     /*width: 60%;*/
     margin: 0 auto;
+}
+a {
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 3px;
+    border: 1px solid #DDD;
+    color: black;
+    text-decoration: none;
+}
+nav a:hover {
+    background: #EEE;
 }
 #chat_content {
     border: 1px solid grey;

@@ -1,7 +1,7 @@
 /**
  * Created by Stefano on 11/08/15.
  */
-//server.js
+//server_prova.js
 /**
  * /views - html templates go here
  * /public - css, js, images ...
@@ -12,14 +12,12 @@
 //set up the server
 var hapi = require("hapi");
 var server = new hapi.Server();
-var User = require('./models/userModel');
-var Room = require('./models/roomCollection');
 server.connection({ port: 8000 });
 server.views({
-    path: "./views/templates",
+    path: "views/templates",
+    layoutPath: "views",
+    layout: "default",
     engines: { html: require('handlebars') },
-    layoutPath: "./views",
-    layout: "layout",
     isCached: false
 });
 //setup the database
@@ -30,7 +28,7 @@ db.init(function() {
     console.log("DB ready");
 
     //do stuff with the database
-    var room = new Room();
+
     //start the server
     server.start(function(){
         console.log('Server running');
@@ -48,16 +46,9 @@ server.route([
 
 //set up the socket io
 var io = require('socket.io')(server.listener);
-
 io.on('connection', function(socket){
 
-    var user = new User(socket);
-
-    user.login(function() {
-        console.log(user.username, ' connected');
-        io.emit('chat message', username + ' joined the conversation');
-
-    });
+    //var user = new User(socket);
 
     socket.on('userConnection', function(username) {
         console.log(username, ' connected');

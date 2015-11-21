@@ -5,8 +5,8 @@
 
 //require view and module
 
-var ChatView = require('./chatView.js');
-var ChatModel = require('./chatModel.js');
+var ChatView = require('./../../models/chatView.js');
+var ChatModel = require('./../../models/chatModel.js');
 
 //create the model
 var chatModel = new ChatModel();

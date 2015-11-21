@@ -5,13 +5,14 @@
 
 //var fromDB = "chat history...";
 //var db = require("../../db");
+var Backbone = require("backbone");
 
-var ChatModel = Backbone.Model.extend({
+module.exports = Backbone.Model.extend({
+//var ChatModel = Backbone.Model.extend({
 
     defaults: {
-        chat_history: "chat history...",
-        inRoom: this.getConnectedUsers,
-        connectedUsers: []
+        roomName: '',
+        connectedUsers: this.getConnectedUsers
     },
 
     //save_chat: function (userName, messages) {
@@ -30,4 +31,4 @@ var ChatModel = Backbone.Model.extend({
 
 });
 
-module.exports = ChatModel;
+//module.exports = ChatModel;

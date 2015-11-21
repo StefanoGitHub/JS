@@ -82,14 +82,14 @@ var database = {
                 }
             });
     },
-    getSession : function(username, done) {
-        db.get("SELECT * FROM t_sessions WHERE username = $username", username, function (err, dataFromDB) {
-            console.log('getSession:', dataFromDB);
-            if (done) {
-                done(err, dataFromDB);
-            }
-        });
-    },
+    //getSession : function(username, done) {
+    //    db.get("SELECT * FROM t_sessions WHERE username = $username", username, function (err, dataFromDB) {
+    //        console.log('getSession:', dataFromDB);
+    //        if (done) {
+    //            done(err, dataFromDB);
+    //        }
+    //    });
+    //},
     insertSession: function(sessionData, done) {
         //console.log('delete session',  sessionData.$username);
         db.run("INSERT INTO t_sessions VALUES ($username, $sessionID);", sessionData, function () {
@@ -147,7 +147,7 @@ var database = {
         console.log('chatData:', chatData);
         async.waterfall([
             function(callback) {
-                db.getChatHistory(chatData.username, function (historyFromDB) {
+                database.getChatHistory(chatData.username, function (historyFromDB) {
                     console.log('history:', historyFromDB);
                     callback(null, historyFromDB);
                 });
@@ -156,11 +156,12 @@ var database = {
                 if (!historyFromDB) {
                     historyFromDB = '';
                 }
-                db.run("UPDATE t_users SET chat_history = $newChatHistory WHERE username = $username);", {
+                var newHistory = historyFromDB + chatData.newMessages;
+                db.run("UPDATE t_users SET chat_history = $newChatHistory WHERE username = $username", {
                     $username: chatData.username,
-                    $newChatHistory: (historyFromDB + chatData.newMessages)
+                    $newChatHistory: newHistory
                 }, function () {
-                    console.log('chat saved1');
+                    console.log('chat saved1 (' + newHistory + ')');
                     callback(null);
                 });
             }

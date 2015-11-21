@@ -3,7 +3,8 @@
  */
 //chatView.js
 
-var ChatView = Backbone.View.extend({
+//var ChatView = Backbone.View.extend({
+module.exports = Backbone.View.extend({
 
     el: "#chat_body",
 
@@ -19,7 +20,7 @@ var ChatView = Backbone.View.extend({
     },
 
     //save_chat: function(e) {
-    //    //get message from the user
+    //    //get message from the usert_users
     //    var messages = $(e.view.$('#messages')).val();
     //    var userName = $(e.view.$('#username')).val();
     //    console.log(message);
@@ -34,4 +35,4 @@ var ChatView = Backbone.View.extend({
 
 });
 
-module.exports = ChatView;
+//module.exports = ChatView;

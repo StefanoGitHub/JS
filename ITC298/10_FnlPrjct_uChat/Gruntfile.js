@@ -52,7 +52,7 @@ module.exports = function(grunt) {
                 tasks: ["browserify"]
             },
 
-            everythingelse: {
+            everything: {
                 //any html
                 files: [ "public/css/*.css", "views/**/*.html", "*.js", "handlers/*.js" ],
                 //no tasks -> just live reload
@@ -64,7 +64,7 @@ module.exports = function(grunt) {
         },
 
         browserify: {
-            //browserify generates a single js file from the different js files in the js/src/ folder
+            //browserify generates a single js file from the different js files in the js folder
             dist: {
                 src: "public/js/main.js",
                 dest: "public/js/bundle.js"
@@ -74,5 +74,7 @@ module.exports = function(grunt) {
 
     //default task(s), executed when run "$ grunt"
     grunt.registerTask("default", ["concurrent", "browserify"]);
+    //grunt.registerTask("default", "concurrent");
+
 
 };

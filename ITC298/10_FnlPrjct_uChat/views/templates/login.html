@@ -1,11 +1,12 @@
-<script type="text/html" id="chat-template">
+<!--<script type="text/html" id="chat-template">-->
 
-    <div id="notification">{{notification}}</div>
+    <div id="notification">{{{notification}}}</div>
 
-    <form id="input-form" method=POST>
+    <form action="/login" id="input-form" method=POST>
         <input name=username placeholder=username required>
         <input name=pwd placeholder=password required>
         <input type=submit value="log-in">
     </form>
-    <button id="signin">sign-in</button>
-</script>
+    <!--<button id="signin">sign-in</button>-->
+    <a href="/signin"><i class="fa-sign-in"></i> sign-in</a>
+<!--</script>-->
