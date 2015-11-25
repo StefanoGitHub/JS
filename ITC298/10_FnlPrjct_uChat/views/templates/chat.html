@@ -31,21 +31,25 @@
 
         //whenever the user send a messages, generate the chat message event
         $('#chat-form').submit(function(){
-            socket.emit('chat message', $('#msg_area').val());
+            socket.emit('chatMessage', $('#msg_area').val());
             $('#msg_area').val('');
             return false;
         });
 
         //when receive a chat message fron the server, append to new messages
-        socket.on('chat message', function(msg){
+        socket.on('chatMessage', function(msg){
             $('#messages').append($('<li>').text(msg));
         });
 
         $('#logout').on('click', function(){
             //var user = $('#username').val();
             //console.log('{{username}}:', 'userDisconnection');
-            socket.emit('userDisconnection', socket);
+            socket.emit('userDisconnection');
             //location.assign("/logout");
+        });
+
+        socket.on('userDisconnection', function(){
+            location.assign("/logout");
         });
 
         $('#save-chat').on('click', function(){

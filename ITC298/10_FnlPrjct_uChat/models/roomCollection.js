@@ -9,25 +9,25 @@ var User = require("./userModel");
 
 var RoomCollection = Backbone.Collection.extend({
 
-    model: User,
+    model: User
 
-    constructor: function() {
-        this.on("chat message", function(event) {
-            console.log(event);
-            this.forEach(function(user) {
-                user.send(event); //route the event out to all other connected User models
-            });
-        }, this); //sets the `this` value inside the callback
-    },
+    //initialize: function() {
+    //    this.on("chatMessage", function(event) {
+    //        console.log(event);
+    //        this.forEach(function(user) {
+    //            user.send(event); //route the event out to all other connected User models
+    //        });
+    //    }, this); //sets the `this` value inside the callback
+    //},
 
-    join: function (user, done) {
-        //console.log('user:', user);
-        this.add(user.toJSON());
-        //register for chat messages event
-        //inform other users
-        user.socket.emit('chat message', user.username + ' joined the conversation');
-        done();
-    }
+    //join: function (user, done) {
+    //    //console.log('user:', user);
+    //    this.add(user.toJSON());
+    //    //register for chat messages event
+    //    //inform other users
+    //    user.socket.emit('chatMessage', user.username + ' joined the conversation');
+    //    done();
+    //}
 
 });
 

@@ -60,19 +60,26 @@ io.on('connection', function(socket){
         user.verify(userData, function(err, authenticated) {
             if (err) { console.error(err); }
             if (authenticated) {
-                room.join(user, function() {
+                //room.join(user, function() {
+                //    console.log('room:', room);
+                //});
+                    room.add(user);
                     console.log('room:', room);
-                });
+
+                //register for chat messages event
+                //inform other users
+                socket.emit('chatMessage', user.username + ' joined the conversation');
+
             } else {
-                user.disconnect(socket);
+                user.disc(socket);
             }
         });
     });
 
     //registering userDisconnection event
-    socket.on('userDisconnection', function(socket){
+    socket.on('userDisconnection', function(){
         console.log(socket.username, ' disconnected');
-        user.disconnect(socket);
+        user.disc(socket);
     });
 
     //registering saveChat event

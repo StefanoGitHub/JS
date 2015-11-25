@@ -16,7 +16,7 @@ module.exports = Backbone.Model.extend({
 
     verify: function(userData, done) {
         var self = this;
-        //console.log('userData in verify:', userData);
+        console.log('userData in verify:', userData);
         db.getSession(userData.username, function(err, fromDB) {
             if (err) { console.error(err); }
             var authenticated = false;
@@ -25,8 +25,8 @@ module.exports = Backbone.Model.extend({
                 self.username = userData.username;
                 self.sessionID = userData.sessionID;
                 self.identity = userData.identity;
-                self.socket.on('chat message', function(msg) {
-                    self.socket.emit('chat message', msg);
+                self.socket.on('chatMessage', function(msg) {
+                    self.socket.emit('chatMessage', msg);
                     //console.log('message: ' + msg);
                 });
 
@@ -37,19 +37,19 @@ module.exports = Backbone.Model.extend({
 
     },
 
-    disconnect: function (socket) {
+    disc: function (socket) {
         //var self = this;
             //console.log(socket.username, ' disconnected');
         //delete session from DB
         //db.deleteSession(socket.username, function (err) {
             //if (err) { console.error(err); }
             //inform other users
-            socket.emit('chat message', socket.username + ' left the conversation', function () {
-                //disconnect the user
+            socket.emit('chatMessage', socket.username + ' left the conversation', function () {
+                //emit event which redirects the client to login page
+                socket.emit('userDisconnection');
+                //disconnect the user socket
                 socket.disconnect();
             });
-            //emit event which redirects the client to login page
-            //socket.emit('userDisconnection');
             //console.log(socket.username, ' disconnected');
         //});
     }
