@@ -7,6 +7,11 @@
         <input name=pwd placeholder=password required>
         <input type=submit value="log-in">
     </form>
-    <!--<button id="signin">sign-in</button>-->
-    <a href="/signin"><i class="fa-sign-in"></i> sign-in</a>
+    <button id="signin">sign-in</button>
+    <!--<a href="/signin"><i class="fa-sign-in"></i> sign-in</a>-->
 <!--</script>-->
+<script>
+    $('#signin').on('click', function(){
+        location.assign("/signin");
+    });
+</script>

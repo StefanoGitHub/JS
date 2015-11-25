@@ -10,36 +10,48 @@ module.exports = Backbone.Model.extend({
 
     constructor: function(socket) {
         this.socket = socket;
-        this.auth = false;
-        //socket.on("userConnection", this.login(userData));
+        //socket.on("userConnection", this.login.bind(this));
         //socket.on("disconnect", this.cleanUp.bind(this));
     },
 
-    login: function(event) {
+    verify: function(userData, done) {
         var self = this;
-        db.checkSession(event.username, event.session, function(err, valid) {
-            if (!valid) return self.disconnect();
-            //otherwise...
-            //store our credentials
-            self.auth = {
-                user: event.username,
-                session: event.session
+        //console.log('userData in verify:', userData);
+        db.getSession(userData.username, function(err, fromDB) {
+            if (err) { console.error(err); }
+            var authenticated = false;
+            if (fromDB || fromDB.sessionID == userData.sessionID) {
+                authenticated = true;
+                self.username = userData.username;
+                self.sessionID = userData.sessionID;
+                self.identity = userData.identity;
+                self.socket.on('chat message', function(msg) {
+                    self.socket.emit('chat message', msg);
+                    //console.log('message: ' + msg);
+                });
+
             }
-            //join the chat
-            self.registerChats();
+            //console.log('self:', self);
+            done(err, authenticated);
         });
+
     },
 
-    registerChats: function() {
-        this.socket.on("chat message", function() {
-            //handle chat messages, probably by dispatching events for the other users
-        });
-    },
-
-    cleanUp: function() {
-        if (this.auth) { //we have a session, so kill it
-            db.deleteSession(this.auth.user, this.auth.session);
-        }
+    disconnect: function (socket) {
+        //var self = this;
+            //console.log(socket.username, ' disconnected');
+        //delete session from DB
+        //db.deleteSession(socket.username, function (err) {
+            //if (err) { console.error(err); }
+            //inform other users
+            socket.emit('chat message', socket.username + ' left the conversation', function () {
+                //disconnect the user
+                socket.disconnect();
+            });
+            //emit event which redirects the client to login page
+            //socket.emit('userDisconnection');
+            //console.log(socket.username, ' disconnected');
+        //});
     }
 
 });

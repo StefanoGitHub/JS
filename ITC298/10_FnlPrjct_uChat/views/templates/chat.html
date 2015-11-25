@@ -15,61 +15,53 @@
             </form>
         </div>
     </div>
-    <!--<button id="logout">log out</button>-->
-    <a href="/logout"><i class="fa-sign-out"></i> log-out</a>
+    <button id="logout">log out</button>
+    <!--<a id="logout" href="/logout"><i class="fa-sign-out"></i> log-out</a>-->
 
     <button id="save-chat">save chat</button>
     <button id="delete-chat">delete chat</button>
 
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>-->
    <script>
-
+        //create client socket
         var socket = io();
-
-        //var username = $('#user').html();
-        //if (username) {
-            // var sessionID = user.attr("data-session");
+        //connect user
         socket.emit("userConnection", { username: '{{username}}', sessionID: '{{sessionID}}' });
-        //}
 
+        //whenever the user send a messages, generate the chat message event
         $('#chat-form').submit(function(){
             socket.emit('chat message', $('#msg_area').val());
             $('#msg_area').val('');
             return false;
         });
 
+        //when receive a chat message fron the server, append to new messages
         socket.on('chat message', function(msg){
             $('#messages').append($('<li>').text(msg));
         });
 
-        //        $('#logout').on('click', function(){
-        //            //var user = $('#username').val();
-        //            console.log(username, 'userDisconnection');
-        //            socket.emit('userDisconnection', username);
-        //            //window.location.replace("/login");
-        //            //socket.disconnect(); //should use username to disconnect only him/her
-        //        });
+        $('#logout').on('click', function(){
+            //var user = $('#username').val();
+            //console.log('{{username}}:', 'userDisconnection');
+            socket.emit('userDisconnection', socket);
+            //location.assign("/logout");
+        });
 
         $('#save-chat').on('click', function(){
             var newMessages = ($('#messages').html()) ? $('#messages').html() : '';
-            console.log('username:', username, 'newMessages:', newMessages);
-            socket.emit('saveChat', {
-                username: username,
-                newMessages: newMessages
-            });
+            console.log('username:', '{{username}}', 'newMessages:', newMessages);
+//            socket.emit('saveChat', {
+//                username: '{{username}}',
+//                newMessages: newMessages
+//            });
+            socket.emit('saveChat', newMessages);
         });
 
         $('#delete-chat').on('click', function(username){
 
         });
 
-        $('#signin').on('click', function(){
-            window.location.replace("/signin");
-        });
-        $('#login').on('click', function(){
-            window.location.replace("/login");
-        });
     </script>
 
 <!--</script>-->

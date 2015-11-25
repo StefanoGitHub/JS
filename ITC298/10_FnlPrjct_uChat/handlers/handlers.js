@@ -33,9 +33,7 @@ module.exports = {
 
             case "logout":
                 var username = req.state.username;
-                db.deleteSession({
-                    $username: username
-                }, function () {
+                db.deleteSession(username, function () {
                     reply.unstate("username");
                     reply.unstate("sessionID");
                     reply.unstate("identity");
@@ -75,23 +73,19 @@ module.exports = {
         var email = req.payload.email;
 
         //verify if user already exists
-        db.getUser({
-                $username: newUserName
-            }, function (err, dataFromDB) {
-            if (err) {
-                throw err;
-            }
+        db.getUser(newUserName, function (err, dataFromDB) {
+            if (err) { console.error(err); }
             if (!dataFromDB) {
                 //create sessionID
                 var sessionID = String(Date.now());
                 async.waterfall([
-                        /****************** need to implement check if user is already in db *******/
-                            function (done) {
+                        function (done) {
                             db.insertUser({
                                 $username: newUserName,
                                 $pwd: pwd,
                                 $email: email
-                            }, function () {
+                            }, function (err) {
+                                if (err) { console.error(err); }
                                 //console.log("new user inserted");
                                 done();
                             });
@@ -100,21 +94,20 @@ module.exports = {
                             db.insertSession({
                                 $username: newUserName,
                                 $sessionID: sessionID
-                            }, function () {
+                            }, function (err) {
+                                if (err) { console.error(err); }
                                 //console.log("session inserted");
                                 done();
                             });
                         }],
                     function (err) {
-                        if (err) {
-                            console.log('Error');
-                        }
+                        if (err) { console.error(err); }
                         //set cookies
                         reply.state("username", newUserName);
                         reply.state("sessionID", sessionID);
                         reply.state("identity", 'authenticated');
                         reply.redirect("/uChat");
-                    });
+                });
             } else {
                 //if user already in DB notify
                 reply.view("signin", {
@@ -131,22 +124,15 @@ module.exports = {
         var pwd = req.payload.pwd;
         //console.log('login username:', username);
 
-        console.log('request.state[username]', req.state[username]);
-
         //if authenticated redirect
         var identity = req.state.identity;
         if (identity == 'authenticated') {
             reply.redirect("/uChat");
         } else {
-            db.getUser({
-                $username: username
-            }, function (err, dataFromDB) {
-                if (err) {
-                    throw err;
-                }
+            db.getUser(username, function (err, dataFromDB) {
+                if (err) { console.error(err); }
                 //console.log('username:', username);
                 //console.log('pwd:', dataFromDB);
-
                 if (!dataFromDB) {
                     //reply.redirect("/signin");
                     reply.view("login", {
@@ -158,14 +144,14 @@ module.exports = {
                         //create sessionID
                         var sessionID = String(Date.now());
                         //clear previous session data (the whole row where the data is stored)
-                        db.deleteSession({
-                            $username: username
-                        }, function () {
+                        db.deleteSession(username, function (err) {
+                            if (err) { console.error(err); }
                             //save the new session ID
                             db.insertSession({
                                 $username: username,
                                 $sessionID: sessionID
-                            }, function () {
+                            }, function (err) {
+                                if (err) { console.error(err); }
                                 //set/update cookies
                                 reply.state("username", username);
                                 reply.state("sessionID", sessionID);

@@ -64,9 +64,7 @@ var database = {
 
         /************************* END FOR TEST **********************************/
         ], function(err) {
-            if (err) {
-                console.log('Error');
-            }
+            if (err) { console.error(err); }
             dbReady();
         });
 
@@ -74,47 +72,47 @@ var database = {
 
     /****************** SESSION *******************/
     deleteSession: function(username, done) {
-        console.log('deleteSession username',  username);
-        db.run("DELETE FROM t_sessions WHERE username = $username;", username, function () {
-                //console.log('deleted?');
-                if (done) {
-                    done();
-                }
-            });
+        done = done || function(){};
+        //console.log('deleteSession username',  username);
+        db.run("DELETE FROM t_sessions WHERE username = $username;", { $username: username }, function (err) {
+            //console.log('deleted?');
+            if (err) { console.error(err); }
+            done();
+        });
     },
-    //getSession : function(username, done) {
-    //    db.get("SELECT * FROM t_sessions WHERE username = $username", username, function (err, dataFromDB) {
-    //        console.log('getSession:', dataFromDB);
-    //        if (done) {
-    //            done(err, dataFromDB);
-    //        }
-    //    });
-    //},
+    getSession : function(username, done) {
+        done = done || function(){}; //err, dataFromDB
+        db.get("SELECT * FROM t_sessions WHERE username = $username", { $username: username }, function (err, dataFromDB) {
+            if (err) { console.error(err); }
+            //console.log('getSession:', dataFromDB);
+            done(err, dataFromDB);
+        });
+    },
     insertSession: function(sessionData, done) {
+        done = done || function(){};
         //console.log('delete session',  sessionData.$username);
-        db.run("INSERT INTO t_sessions VALUES ($username, $sessionID);", sessionData, function () {
-            console.log('new session insert');
-            if (done) {
-                done();
-            }
+        db.run("INSERT INTO t_sessions VALUES ($username, $sessionID);", sessionData, function (err) {
+            if (err) { console.error(err); }
+            //console.log('new session insert');
+            done();
         });
     },
 
     /****************** USER *******************/
     getUser : function(username, done) {
-        db.get("SELECT * FROM t_users WHERE username = $username", username, function (err, dataFromDB) {
-            console.log('getSession:', dataFromDB);
-            if (done) {
-                done(err, dataFromDB);
-            }
+        done = done || function(){};
+        db.get("SELECT * FROM t_users WHERE username = $username", { $username: username }, function (err, dataFromDB) {
+            if (err) { console.error(err); }
+            //console.log('getUser:', dataFromDB);
+            done(err, dataFromDB);
         });
     },
     insertUser: function(userData, done) {
-        db.run("INSERT INTO t_users VALUES ($username, $pwd, $email, '');", userData, function () {
-            console.log('insertUser:',  userData);
-            if (done) {
-                done();
-            }
+        done = done || function(){};
+        db.run("INSERT INTO t_users VALUES ($username, $pwd, $email, '');", userData, function (err) {
+            if (err) { console.error(err); }
+            //console.log('insertUser:',  userData);
+            done();
         });
     },
 
@@ -133,13 +131,13 @@ var database = {
     //    });
     //},
     getChatHistory: function(username, done) {
+        done = done || function(){}; //err, historyFromDB
         db.get("SELECT chat_history FROM t_users WHERE username = $username", {
             $username: username
         }, function (err, historyFromDB) {
+            if (err) { console.error(err); }
             console.log('from DB', historyFromDB);
-            if (done) {
-                done(err, historyFromDB);
-            }
+            done(err, historyFromDB);
         });
     },
 
@@ -147,7 +145,8 @@ var database = {
         console.log('chatData:', chatData);
         async.waterfall([
             function(callback) {
-                database.getChatHistory(chatData.username, function (historyFromDB) {
+                database.getChatHistory(chatData.username, function (err, historyFromDB) {
+                    if (err) { console.error(err); }
                     console.log('history:', historyFromDB);
                     callback(null, historyFromDB);
                 });
@@ -160,15 +159,14 @@ var database = {
                 db.run("UPDATE t_users SET chat_history = $newChatHistory WHERE username = $username", {
                     $username: chatData.username,
                     $newChatHistory: newHistory
-                }, function () {
+                }, function (err) {
+                    if (err) { console.error(err); }
                     console.log('chat saved1 (' + newHistory + ')');
                     callback(null);
                 });
             }
         ], function(err) {
-            if (err) {
-                console.log('Error');
-            }
+            if (err) { console.error(err); }
             console.log('chat saved 2');
             doneSaving();
         });
