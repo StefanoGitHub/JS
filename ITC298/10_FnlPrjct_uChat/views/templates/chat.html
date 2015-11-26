@@ -16,6 +16,8 @@
         </div>
     </div>
     <button id="logout">log out</button>
+<button id="test">test</button>
+
     <!--<a id="logout" href="/logout"><i class="fa-sign-out"></i> log-out</a>-->
 
     <button id="save-chat">save chat</button>
@@ -29,10 +31,11 @@
         //connect user
         socket.emit("userConnection", { username: '{{username}}', sessionID: '{{sessionID}}' });
 
+        var $message_area = $('#msg_area');
         //whenever the user send a messages, generate the chat message event
         $('#chat-form').submit(function(){
-            socket.emit('chatMessage', $('#msg_area').val());
-            $('#msg_area').val('');
+            socket.emit('chatMessage', $message_area.val());
+            $message_area.val('');
             return false;
         });
 
@@ -44,16 +47,23 @@
         $('#logout').on('click', function(){
             //var user = $('#username').val();
             //console.log('{{username}}:', 'userDisconnection');
-            socket.emit('userDisconnection');
-            //location.assign("/logout");
-        });
-
-        socket.on('userDisconnection', function(){
+            socket.emit('logout');
             location.assign("/logout");
         });
 
+        $('#test').on('click', function(){
+            //console.log('test');
+            socket.emit('test');
+        });
+
+//        socket.on('redirect', function(){
+//            //console.log('user disconnected');
+//            location.assign("/login");
+//        });
+
+        var $messages = $('#messages');
         $('#save-chat').on('click', function(){
-            var newMessages = ($('#messages').html()) ? $('#messages').html() : '';
+            var newMessages = ($messages.html()) ? $messages.html() : '';
             console.log('username:', '{{username}}', 'newMessages:', newMessages);
 //            socket.emit('saveChat', {
 //                username: '{{username}}',

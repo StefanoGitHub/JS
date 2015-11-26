@@ -53,33 +53,24 @@ var io = require('socket.io')(server.listener);
 io.on('connection', function(socket){
     //create the user model, passing th socket obj
     var user = new User(socket);
-
     //registering userConnection event
     socket.on('userConnection', function(userData) {
-        //console.log('userData prima di verify:', userData);
         user.verify(userData, function(err, authenticated) {
             if (err) { console.error(err); }
             if (authenticated) {
-                //room.join(user, function() {
-                //    console.log('room:', room);
-                //});
-                    room.add(user);
-                    console.log('room:', room);
-
-                //register for chat messages event
-                //inform other users
-                socket.emit('chatMessage', user.username + ' joined the conversation');
-
+                room.addThis(user);
             } else {
-                user.disc(socket);
+
+                // !!!!!!!! check when we get here and figure out what to do !!!!!!!!!!!
+                console.log('ERROR server.js line:76');
+
             }
         });
     });
 
-    //registering userDisconnection event
-    socket.on('userDisconnection', function(){
-        console.log(socket.username, ' disconnected');
-        user.disc(socket);
+    //registering logout event
+    socket.on('logout', function(){
+        user.logout(socket);
     });
 
     //registering saveChat event
@@ -97,8 +88,14 @@ io.on('connection', function(socket){
     //    //});
     //});
 
-    //socket.on('disconnect', function(socket){
-    //    user.disconnect(socket);
-    //});
+    socket.on('disconnect', function(){
+
+        // !!!!!!! ERROR !!!!!!!!!!!!!!!
+        // need to do something otherwise at any page reload we add a new user...
+
+        //user.clean(socket);
+        //socket.emit('chatMessage', user.username + ' left the conversation')
+        //user.logout(socket);
+    });
 
 });

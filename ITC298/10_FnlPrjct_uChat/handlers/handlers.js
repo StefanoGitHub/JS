@@ -9,61 +9,82 @@ module.exports = {
 
     checkSession: function (req, reply) {
         var page = req.params.page;
-        var identity = req.state.identity;
+        var username = req.state.username || '';
+        var sessionID = req.state.sessionID || '';
+        var authenticated = false;
 
-        switch (page) {
+        var clearCookies = function () {
+            reply.unstate("username");
+            reply.unstate("sessionID");
+        };
 
-            case "login":
-                if (identity == 'authenticated') {
-                    reply.redirect("/uChat");
-                } else {
-                    reply.view("login", {
-                        pageTitle: "uChat log-in",
-                        notification: ''
-                    });
+        db.getSession(username, function (err, dataFromDB) {
+            if (err) { console.error(err); }
+            if (dataFromDB) {
+                if (dataFromDB.username == username && dataFromDB.sessionID == sessionID) {
+                    authenticated = true;
                 }
-                break;
+            }
 
-            case "signin":
-                reply.view("signin", {
-                    pageTitle: "uChat sign-in",
-                    notification: ''
-                });
-                break;
+            switch (page) {
 
-            case "logout":
-                var username = req.state.username;
-                db.deleteSession(username, function () {
-                    reply.unstate("username");
-                    reply.unstate("sessionID");
-                    reply.unstate("identity");
-                    reply.view("login", {
-                        pageTitle: "log-out",
-                        notification: 'You successfully <strong>logged out</strong>'
-                    });
-                });
-                break;
+                case "login":
+                    if (authenticated) {
+                        reply.redirect("/uChat");
+                    } else {
+                        clearCookies();
+                        reply.view("login", {
+                            pageTitle: "uChat log-in",
+                            notification: ''
+                        });
+                    }
+                    break;
 
-            case "uChat":
-                if (identity == 'authenticated') {
-                    var userName = req.state.username;
-                    var sessionID = req.state.sessionID;
+                case "signin":
+                    if (authenticated) {
+                        reply.redirect("/uChat");
+                    } else {
+                        reply.view("signin", {
+                            pageTitle: "uChat sign-in",
+                            notification: ''
+                        });
+                    }
+                    break;
 
-                    reply.view("chat", {
-                        pageTitle: "uChat",
-                        username: userName,
-                        sessionID: sessionID
-                    });
-                } else {
+                case "logout":
+                    //if (!authenticated) {
+                    //clearCookies();
+                    //    reply.redirect("/login");
+                    //} else {
+                        db.deleteSession(username, function () {
+                            clearCookies();
+                            reply.view("login", {
+                                pageTitle: "log-out",
+                                notification: 'You successfully <strong>logged out</strong>'
+                            });
+                        });
+                    //}
+                    break;
+
+                case "uChat":
+                    if (authenticated) {
+                        reply.view("chat", {
+                            pageTitle: "uChat",
+                            username: username,
+                            sessionID: sessionID
+                        });
+                    } else {
+                        reply.redirect("/login");
+                    }
+                    break;
+
+                default:
                     reply.redirect("/login");
-                }
-                break;
+                    break;
 
-            default:
-                reply.redirect("/login");
-                break;
+            }
+        });
 
-        }
     },
 
     signin: function (req, reply) {
@@ -105,7 +126,6 @@ module.exports = {
                         //set cookies
                         reply.state("username", newUserName);
                         reply.state("sessionID", sessionID);
-                        reply.state("identity", 'authenticated');
                         reply.redirect("/uChat");
                 });
             } else {
@@ -119,22 +139,20 @@ module.exports = {
     },
 
     login: function (req, reply) {
-        //pwd & username are required in the form, no need to check if not null
-        var username = req.payload.username;
-        var pwd = req.payload.pwd;
-        //console.log('login username:', username);
-
         //if authenticated redirect
-        var identity = req.state.identity;
-        if (identity == 'authenticated') {
+        if (req.state.authenticated == 'authenticated') {
             reply.redirect("/uChat");
         } else {
+            //pwd & username are required in the form, no need to check if not null
+            var username = req.payload.username;
+            var pwd = req.payload.pwd;
+            //console.log('login username:', username);
+
             db.getUser(username, function (err, dataFromDB) {
                 if (err) { console.error(err); }
                 //console.log('username:', username);
                 //console.log('pwd:', dataFromDB);
                 if (!dataFromDB) {
-                    //reply.redirect("/signin");
                     reply.view("login", {
                         pageTitle: "uChat log-in",
                         notification: 'User not registered, please <strong>Sign-in</strong>'
@@ -155,12 +173,10 @@ module.exports = {
                                 //set/update cookies
                                 reply.state("username", username);
                                 reply.state("sessionID", sessionID);
-                                reply.state("identity", 'authenticated');
                                 reply.redirect("/uChat");
                             });
                         })
                     } else {
-                        //reply.redirect("/login");
                         reply.view("login", {
                             pageTitle: "uChat log-in",
                             notification: 'Username or Password <strong>not correct</strong>'
