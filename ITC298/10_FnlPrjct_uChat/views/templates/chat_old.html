@@ -1,28 +1,16 @@
-<script type="text/html" id="chat_messages-template">
-    <ul id="chat_messages">
-        <% _.each( chatMessages, function( message ){ %>
-        <li><%= message %></li>
-        <% }); %>
-    </ul>
+<!--<script type="text/html" id="chat-template">-->
 
-    <aside>
-        <div id="users_container">
-            Connected users:
-            <ul id="connected_users">
-                <% _.each( connectedUsers, function( user ){ %>
-                <li><%= user %></li>
-                <% }); %>
-            </ul>
-        </div>
-    </aside>
+<!--</script>-->
 
-</script>
 
     <div id="chat">
+        <!--<div id="welcome">Welcome <span id="user" data-session="{{sessionID}}">{{username}}</span>! <br>-->
         <div id="welcome">Welcome <span>{{username}}</span>! <br>
+
                 You are now connected</div>
-        <div id="hapi_container">
-            <!--injected content from chatView.js-->
+        <div id="chat_content">
+            <span id="chat_history">{{chat_history}}</span>
+            <ul id="messages"></ul>
         </div>
         <div id="chat_input_panel">
             <form id="chat-form" action="">
@@ -33,20 +21,13 @@
     </div>
     <button id="logout">log out</button>
 
+    <!--<a id="logout" href="/logout"><i class="fa-sign-out"></i> log-out</a>-->
+
     <button id="save-chat">save chat</button>
     <button id="delete-chat">delete chat</button>
 
-
-
-
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>-->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.3/backbone-min.js"></script>
-
-<script type="text/javascript" src="/public/js/bundle.js">//browserified (watchified) script</script>
-
    <script>
         //create client socket
         var socket = io();
@@ -61,6 +42,10 @@
             return false;
         });
 
+        //when receive a chat message from the server, append to new messages
+//        socket.on('chatMessage', function(msg, username){
+//            $('#messages').append($('<li>').text(username + ': ' + msg));
+//        });
         socket.on('chatMessage', function(msg){
             $('#messages').append($('<li>').text(msg));
         });

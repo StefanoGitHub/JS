@@ -52,7 +52,7 @@ a {
 nav a:hover {
     background: #EEE;
 }
-#chat_content {
+#hapi_container {
     border: 1px solid grey;
     /*width: 60%;*/
     margin: 0 auto;
@@ -83,9 +83,20 @@ footer{
     padding: 3em 0;
     color: slategrey;
 }
-#messages { list-style-type: none; margin: 0; padding: 0; }
-#messages li { padding: 5px 10px; }
-#messages li:nth-child(odd) { background: lightgrey; }
+#chat_messages { list-style-type: none; margin: 0; padding: 0; }
+#chat_messages li { padding: 5px 10px; }
+#chat_messages li:nth-child(odd) { background: lightgrey; }
+
+
+aside {
+    float: left;
+    position: fixed;
+    bottom: 1em;
+    left: 1em;
+    border: 1px solid red;
+}
+#connected_users { list-style-type: none; }
+#connected_users li { margin: 0.5em; font-weight: bold; }
 
 
 /****** dynamic style ******/

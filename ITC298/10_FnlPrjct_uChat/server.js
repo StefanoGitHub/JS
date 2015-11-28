@@ -52,13 +52,19 @@ var io = require('socket.io')(server.listener);
 
 io.on('connection', function(socket){
     //create the user model, passing th socket obj
+
     var user = new User(socket);
     //registering userConnection event
     socket.on('userConnection', function(userData) {
         user.verify(userData, function(err, authenticated) {
             if (err) { console.error(err); }
             if (authenticated) {
-                room.addThis(user);
+                if (room.connectedUsers.indexOf(userData.username) < 0) {
+                    room.addThis(user);
+                } else {
+                    room.rejoin(user);
+                }
+                //console.log('connectedUsers (server)', room.connectedUsers);
             } else {
 
                 // !!!!!!!! check when we get here and figure out what to do !!!!!!!!!!!
@@ -88,7 +94,7 @@ io.on('connection', function(socket){
     //    //});
     //});
 
-    socket.on('disconnect', function(){
+    //socket.on('disconnect', function(){
 
         // !!!!!!! ERROR !!!!!!!!!!!!!!!
         // need to do something otherwise at any page reload we add a new user...
@@ -96,6 +102,6 @@ io.on('connection', function(socket){
         //user.clean(socket);
         //socket.emit('chatMessage', user.username + ' left the conversation')
         //user.logout(socket);
-    });
+    //});
 
 });

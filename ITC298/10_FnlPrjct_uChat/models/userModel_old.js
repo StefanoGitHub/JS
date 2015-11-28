@@ -9,8 +9,15 @@ var db = require("../db");
 module.exports = Backbone.Model.extend({
 
     initialize: function(socket) {
-        //associate the socket to the user obj
+        //associate the socket to the user
         this.socket = socket;
+        //var self = this;
+        ////registering userDisconnection event
+        //socket.on('logout', function(){
+        //    this.logout(socket);
+        //    //console.log(user.username, ' disconnected');
+        //});
+
     },
 
     verify: function(userData, done) {
@@ -20,19 +27,16 @@ module.exports = Backbone.Model.extend({
             if (err) { console.error(err); }
             var authenticated = false;
             if (fromDB && fromDB.sessionID == userData.sessionID) {
+                authenticated = true;
                 //set user's properties
                 self.username = userData.username;
                 self.sessionID = userData.sessionID;
-                authenticated = true;
+                self.authenticated = 'authenticated';
                 //register for chatMessage event
                 self.socket.on('chatMessage', function(msg) {
                     //trigger a chatMessage event that will be caught by the room
-                    self.trigger('chatMessage', self.username + ': ' + msg);
+                    self.trigger('chatMessage', msg);
                     //console.log('message: ' + msg);
-                });
-                self.socket.on('disconnect', function() {
-                    //trigger a chatMessage event that will be caught by the room
-                    self.trigger('disconnect', self);
                 });
             }
             //return result
@@ -47,10 +51,10 @@ module.exports = Backbone.Model.extend({
         //delete session from DB
         db.deleteSession (self.username, function () {
             //inform other users
-            self.trigger('chatMessage', self.username + ' left the conversation');
+            socket.emit('chatMessage', self.socket.username + ' left the conversation');
             //emit event that will delete the user from the room collection
             self.trigger('logout', self);
-            //console.log(self.username, ' disconnected');
+            console.log(self.username, ' disconnected');
             //disconnect the user socket
             socket.disconnect();
         });
@@ -59,14 +63,14 @@ module.exports = Backbone.Model.extend({
 });
 
 /*
- save_chat: function (userName, messages) {
- //here the code to update the history of the chat
- db.connection.getChatHistory(userName, function (err, userName, historyFromDB) {
- //console.log(chat_history);
- var newChatHistory = historyFromDB + messages;
- db.connection.saveChatHistory(userName, newChatHistory);
- });
- }
+    save_chat: function (userName, messages) {
+        //here the code to update the history of the chat
+        db.connection.getChatHistory(userName, function (err, userName, historyFromDB) {
+            //console.log(chat_history);
+            var newChatHistory = historyFromDB + messages;
+            db.connection.saveChatHistory(userName, newChatHistory);
+        });
+    }
 
- });
- */
+});
+*/

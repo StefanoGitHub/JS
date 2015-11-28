@@ -31,20 +31,6 @@ module.exports = function(grunt) {
 
         watch: {
             //watch performs defined tasks whenever changes are saved in matching files
-/*
-            html: {
-                //any html
-                files: "views/*.html",
-                //no tasks -> just live reload
-                tasks: []
-            },
-            bundle: {
-                //any html
-                files: ["public/js/bundle.js", "*.js", "css/*.css"],
-                //no tasks -> just live reload
-                tasks: []
-            },
- */
             hapi: {
                 //any html
                 files: [ "public/js/main.js", "public/js/chatView.js", "public/js/chatModel.js"],

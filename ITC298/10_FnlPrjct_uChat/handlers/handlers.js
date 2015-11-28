@@ -5,6 +5,11 @@
 var db = require("../db");
 var async = require('async');
 
+function clearCookies (reply) {
+    reply.unstate("username");
+    reply.unstate("sessionID");
+}
+
 module.exports = {
 
     checkSession: function (req, reply) {
@@ -12,11 +17,6 @@ module.exports = {
         var username = req.state.username || '';
         var sessionID = req.state.sessionID || '';
         var authenticated = false;
-
-        var clearCookies = function () {
-            reply.unstate("username");
-            reply.unstate("sessionID");
-        };
 
         db.getSession(username, function (err, dataFromDB) {
             if (err) { console.error(err); }
@@ -32,7 +32,7 @@ module.exports = {
                     if (authenticated) {
                         reply.redirect("/uChat");
                     } else {
-                        clearCookies();
+                        clearCookies(reply);
                         reply.view("login", {
                             pageTitle: "uChat log-in",
                             notification: ''
@@ -53,11 +53,11 @@ module.exports = {
 
                 case "logout":
                     //if (!authenticated) {
-                    //clearCookies();
+                    //clearCookies(reply);
                     //    reply.redirect("/login");
                     //} else {
                         db.deleteSession(username, function () {
-                            clearCookies();
+                            clearCookies(reply);
                             reply.view("login", {
                                 pageTitle: "log-out",
                                 notification: 'You successfully <strong>logged out</strong>'
@@ -139,52 +139,65 @@ module.exports = {
     },
 
     login: function (req, reply) {
-        //if authenticated redirect
-        if (req.state.authenticated == 'authenticated') {
-            reply.redirect("/uChat");
-        } else {
-            //pwd & username are required in the form, no need to check if not null
-            var username = req.payload.username;
-            var pwd = req.payload.pwd;
-            //console.log('login username:', username);
+        var username = req.state.username || '';
+        var sessionID = req.state.sessionID || '';
+        var authenticated = false;
 
-            db.getUser(username, function (err, dataFromDB) {
-                if (err) { console.error(err); }
-                //console.log('username:', username);
-                //console.log('pwd:', dataFromDB);
-                if (!dataFromDB) {
-                    reply.view("login", {
-                        pageTitle: "uChat log-in",
-                        notification: 'User not registered, please <strong>Sign-in</strong>'
-                    });
-                } else {
-                    if (pwd == dataFromDB.pwd) {
-                        //create sessionID
-                        var sessionID = String(Date.now());
-                        //clear previous session data (the whole row where the data is stored)
-                        db.deleteSession(username, function (err) {
-                            if (err) { console.error(err); }
-                            //save the new session ID
-                            db.insertSession({
-                                $username: username,
-                                $sessionID: sessionID
-                            }, function (err) {
-                                if (err) { console.error(err); }
-                                //set/update cookies
-                                reply.state("username", username);
-                                reply.state("sessionID", sessionID);
-                                reply.redirect("/uChat");
-                            });
-                        })
-                    } else {
+        db.getSession(username, function (err, dataFromDB) {
+            if (err) { console.error(err); }
+            if (dataFromDB) {
+                if (dataFromDB.username == username && dataFromDB.sessionID == sessionID) {
+                    authenticated = true;
+                }
+            }
+            //if authenticated redirect
+            if (authenticated) {
+                reply.redirect("/uChat");
+            } else {
+                //pwd & username are required in the form, no need to check if not null
+                var username = req.payload.username;
+                var pwd = req.payload.pwd;
+                //console.log('login username:', username);
+
+                db.getUser(username, function (err, dataFromDB) {
+                    if (err) { console.error(err); }
+                    //console.log('username:', username);
+                    //console.log('pwd:', dataFromDB);
+                    if (!dataFromDB) {
                         reply.view("login", {
                             pageTitle: "uChat log-in",
-                            notification: 'Username or Password <strong>not correct</strong>'
+                            notification: 'User not registered, please <strong>Sign-in</strong>'
                         });
+                    } else {
+                        if (pwd == dataFromDB.pwd) {
+                            //create sessionID
+                            var sessionID = String(Date.now());
+                            //clear previous session data (the whole row where the data is stored)
+                            db.deleteSession(username, function (err) {
+                                if (err) { console.error(err); }
+                                //save the new session ID
+                                db.insertSession({
+                                    $username: username,
+                                    $sessionID: sessionID
+                                }, function (err) {
+                                    if (err) { console.error(err); }
+                                    //set/update cookies
+                                    reply.state("username", username);
+                                    reply.state("sessionID", sessionID);
+                                    reply.redirect("/uChat");
+                                });
+                            })
+                        } else {
+                            clearCookies(reply);
+                            reply.view("login", {
+                                pageTitle: "uChat log-in",
+                                notification: 'Username or Password <strong>not correct</strong>'
+                            });
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
+        });
     }
 
 };

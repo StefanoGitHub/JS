@@ -3,20 +3,24 @@
  */
 //chatView.js
 
+//var Backbone = require("backbone");
+
 //var ChatView = Backbone.View.extend({
 module.exports = Backbone.View.extend({
 
-    el: "#chat_body",
+    el: "#hapi_container",
 
     initialize: function() {
         //set a refresh of the page upon changes
-        this.listenTo(this.model, "change:chat_history", this.render);
+        this.listenTo(this.model, "change:connectedUsers", this.render);
+        this.listenTo(this.model, "change:chatMessages", this.render);
     },
 
-    template: _.template( $("#chat-template").html() ),
+    template: _.template( $("#chat_messages-template").html() ),
 
     events: {
-        "click #save-chat": "save_chat"
+
+        //"click #save-chat": "save_chat"
     },
 
     //save_chat: function(e) {

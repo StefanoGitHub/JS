@@ -4,9 +4,9 @@
 //main.js
 
 //require view and module
-
-var ChatView = require('./../../models/chatView.js');
-var ChatModel = require('./../../models/chatModel.js');
+var ChatView = require('./chatView.js');
+var ChatModel = require('./chatModel.js');
+//var roomCollection = require('../../models/roomCollection.js');
 
 //create the model
 var chatModel = new ChatModel();
@@ -14,6 +14,8 @@ var chatModel = new ChatModel();
 //create the view and connect it to the model
 var chatView = new ChatView({
     model: chatModel
+    //users: roomCollection.connectedUsers,
+    //messages: roomCollection.messages
 });
 
 //render the view into html file
