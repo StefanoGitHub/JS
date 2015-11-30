@@ -51,6 +51,7 @@ server.route([
 
 //shouldn't we create here the "default room"?
 var room = new UsersCollection();
+console.log('room:', room);
 
 //set up the socket io server
 var io = require('socket.io')(server.listener);
@@ -61,8 +62,8 @@ io.on('connection', function(socket){
     //and its view
     //var userView = new UserView( { model: user });
     //var chatView = new ChatView( { collection: room} );
-    io.emit('test', 'a test');
-    io.emit('createConnectedUsersList', room);
+    socket.emit('test', 'a test');
+    socket.emit('createConnectedUsersList', room);
     //registering userConnection event
     socket.on('userConnection', function(userData) {
         user.verify(userData, function(err, authenticated) {
@@ -70,6 +71,8 @@ io.on('connection', function(socket){
             if (authenticated) {
                 if (room.connectedUsers.indexOf(userData.username) < 0) {
                     room.addThis(user);
+                    //socket.emit('createConnectedUsersList', room);
+
                 } else {
                     room.rejoin(user);
 

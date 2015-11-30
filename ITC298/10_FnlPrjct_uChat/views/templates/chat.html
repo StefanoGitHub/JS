@@ -18,17 +18,19 @@
 
 <!--</script>-->
 
-<script type="text/html" id="user-template">
-    <%= username %>
-</script>
+<!--<script type="text/html" id="user-template">-->
+    <!--<li><%= username %></li>-->
+<!--</script>-->
 
 
     <div id="chat">
         <div id="welcome">Welcome <span>{{username}}</span>! <br>
                 You are now connected</div>
-        <div id="hapi_container">
+
+        <ul id="chat_messages">
             <!--injected content from chatView.js-->
-        </div>
+        </ul>
+
         <div id="chat_input_panel">
             <form id="chat-form" action="">
                 <textarea id="msg_area" rows="3" placeholder="type your message" autofocus required></textarea>
@@ -41,11 +43,15 @@
     <button id="save-chat">save chat</button>
     <button id="delete-chat">delete chat</button>
 
+    <aside>
+        <ul id="userList">
+            <!--injected content from usersView.js-->
+        </ul>
+    </aside>
 
 
 
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>-->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.3/backbone-min.js"></script>
@@ -55,65 +61,98 @@
    <script>
         //create client socket
         var socket = io();
+        var usersView = null;
+        var chatModel = null;
         var chatView = null;
-        //var Backbone = require("backbone");
+
         //connect user
         socket.emit("userConnection", { username: '{{username}}', sessionID: '{{sessionID}}' });
 
         var UserView = Backbone.View.extend({
             tagName: 'li',
-
-            template: _.template( $("#user-template").html() ),
-
             initialize: function() {
                 this.render();
                 //this.listenTo(this.model, "change:connectedUsers", this.render);
             },
-
             render: function() {
-                var html = this.template(this.model.toJSON());
-                this.$el.html(html);
+                //console.log('from render UserView', this.model.get('username'));
+                //var html = this.template(this.model.get('username'));
+                //console.log( this.$el.html(this.model.get('username')) );
                 return this;
             }
-
         });
 
-        var ChatView = Backbone.View.extend({
-
-//            tagName: 'ul',
-//            id: 'hapi_container',
-            el: "#hapi_container",
-
+        var ChatModel = Backbone.Model.extend({
+            defaults: {
+                connectedUsers: {},
+                chatMessages: []
+        },
             initialize: function() {
-                console.log(this);
-                this.render();
+                console.log('initialize chatModel', this);
+//                this.connectedUsers = room;
+//                this.chatMessages = room.chatMessages;
+            }
+        });
+
+        var UsersView = Backbone.View.extend({
+            el: "#userList",
+            initialize: function() {
+                console.log('initialize usersView', this);
                 //set a refresh of the page upon changes
-                //this.listenTo(this.collection, "change:models", this.render);
-                //this.listenTo(this.model, "change:chatMessages", this.render);
+                //this.collection.on('collection', this.render, this);
+                //this.render();
             },
-
             //template: _.template( $("#chat_messages-template").html() ),
-
             render: function() {
-                console.log(this);
+                //console.log('render usersList', this.model);
+/*
                 this.collection.each(function (user) {
                     var userView = new UserView( { model: user });
                     this.$el.append(userView.render().el);
                 }, this);
-                return this;
+*/
+                //return this;
             }
-
         });
+
+        var ChatView = Backbone.View.extend({
+            el: "#chat_messages",
+            initialize: function() {
+                console.log('initialize chatView', this);
+/*
+                var history = this.model.get('chatMessages');
+                history.forEach(function(message) {
+                    this.$el.html(message);
+                });
+*/
+                //set a refresh of the page upon changes
+                //this.listenTo(this.model, "change:connectedUsers", this.updateChat);
+                //this.render();
+            },
+            //template: _.template( $("#chat_messages-template").html() ),
+            render: function() {
+                //console.log('render chat:', this);
+                //create the ul with all the messages
+                //return this;
+            },
+            updateChat: function() {
+
+            }
+        });
+
+//        socket.on('test', function (msg) {
+//            console.log('this is ' + msg);
+//        });
 
         socket.on('createConnectedUsersList', function(room) {
-            console.log('create collection view');
-            chatView = new ChatView( { collection: room } );
+            console.log('create collection view; room:', room);
+            chatModel = new ChatModel();
+            chatModel.connectedUsers = room;
+            chatModel.chatMessages = room.chatMessages;
+            usersView = new UsersView({ collection: chatModel.connectedUsers });
+            chatView = new ChatView({ model: chatModel });
             //chatView.render();
         });
-
-socket.on('test', function (test) {
-    console.log('this is ' + test);
-});
 
 
         var $message_area = $('#msg_area');
@@ -128,7 +167,6 @@ socket.on('test', function (test) {
 //            $('#messages').append($('<li>').text(msg));
 //        });
 
-
         $('#logout').on('click', function(){
             //var user = $('#username').val();
             //console.log('{{username}}:', 'userDisconnection');
@@ -136,25 +174,20 @@ socket.on('test', function (test) {
             location.assign("/logout");
         });
 
-//        socket.on('redirect', function(){
-//            //console.log('user disconnected');
-//            location.assign("/login");
+//        var $messages = $('#messages');
+//        $('#save-chat').on('click', function(){
+//            var newMessages = ($messages.html()) ? $messages.html() : '';
+//            console.log('username:', '{{username}}', 'newMessages:', newMessages);
+////            socket.emit('saveChat', {
+////                username: '{{username}}',
+////                newMessages: newMessages
+////            });
+//            socket.emit('saveChat', newMessages);
 //        });
-
-        var $messages = $('#messages');
-        $('#save-chat').on('click', function(){
-            var newMessages = ($messages.html()) ? $messages.html() : '';
-            console.log('username:', '{{username}}', 'newMessages:', newMessages);
-//            socket.emit('saveChat', {
-//                username: '{{username}}',
-//                newMessages: newMessages
-//            });
-            socket.emit('saveChat', newMessages);
-        });
-
-        $('#delete-chat').on('click', function(username){
-
-        });
+//
+//        $('#delete-chat').on('click', function(username){
+//
+//        });
 
     </script>
 
