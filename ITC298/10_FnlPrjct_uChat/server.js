@@ -61,7 +61,8 @@ io.on('connection', function(socket){
     //and its view
     //var userView = new UserView( { model: user });
     //var chatView = new ChatView( { collection: room} );
-
+    io.emit('test', 'a test');
+    io.emit('createConnectedUsersList', room);
     //registering userConnection event
     socket.on('userConnection', function(userData) {
         user.verify(userData, function(err, authenticated) {
@@ -69,10 +70,9 @@ io.on('connection', function(socket){
             if (authenticated) {
                 if (room.connectedUsers.indexOf(userData.username) < 0) {
                     room.addThis(user);
-                    //chatView.render();
-                    socket.emit('updateConnectedUsersList', room);
                 } else {
                     room.rejoin(user);
+
                 }
                 //console.log('connectedUsers (server)', room.connectedUsers);
             } else {
