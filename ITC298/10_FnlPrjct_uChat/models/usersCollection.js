@@ -1,12 +1,12 @@
 /**
  * Created by Stefano on 11/20/15.
  */
-//roomCollection.js
+//usersCollection.js
 
 var Backbone = require("backbone");
 var User = require("./userModel");
 
-//var RoomCollection = Backbone.Collection.extend({
+//var UsersCollection = Backbone.Collection.extend({
 module.exports = Backbone.Collection.extend({
 
     model: User,
@@ -81,4 +81,4 @@ module.exports = Backbone.Collection.extend({
 
 });
 
-//module.exports = RoomCollection;
+//module.exports = UsersCollection;

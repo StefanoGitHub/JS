@@ -13,7 +13,12 @@
 var hapi = require("hapi");
 var server = new hapi.Server();
 var User = require('./models/userModel');
-var RoomCollection = require('./models/roomCollection');
+//var Backbone = require("backbone");
+
+//var UserView = require('./models/userView');
+var UsersCollection = require('./models/usersCollection');
+//var ChatView = require('./public/js/chatView');
+
 server.connection({ port: 8000 });
 server.views({
     path: "./views/templates",
@@ -45,15 +50,18 @@ server.route([
 ]);
 
 //shouldn't we create here the "default room"?
-var room = new RoomCollection();
+var room = new UsersCollection();
 
 //set up the socket io server
 var io = require('socket.io')(server.listener);
 
 io.on('connection', function(socket){
     //create the user model, passing th socket obj
-
     var user = new User(socket);
+    //and its view
+    //var userView = new UserView( { model: user });
+    //var chatView = new ChatView( { collection: room} );
+
     //registering userConnection event
     socket.on('userConnection', function(userData) {
         user.verify(userData, function(err, authenticated) {
@@ -61,6 +69,8 @@ io.on('connection', function(socket){
             if (authenticated) {
                 if (room.connectedUsers.indexOf(userData.username) < 0) {
                     room.addThis(user);
+                    //chatView.render();
+                    socket.emit('updateConnectedUsersList', room);
                 } else {
                     room.rejoin(user);
                 }

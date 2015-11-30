@@ -8,6 +8,12 @@ var db = require("../db");
 
 module.exports = Backbone.Model.extend({
 
+    defaults: {
+        username: '',
+        sessionID: '',
+        socket: {}
+    },
+
     initialize: function(socket) {
         //associate the socket to the user obj
         this.socket = socket;

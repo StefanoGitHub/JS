@@ -1,7 +1,7 @@
 /**
  * Created by Stefano on 11/20/15.
  */
-//roomCollection.js
+//usersCollection.js
 
 var Backbone = require("backbone");
 var User = require("./userModel");

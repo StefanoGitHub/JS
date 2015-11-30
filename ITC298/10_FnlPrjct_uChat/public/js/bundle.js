@@ -40,15 +40,18 @@ module.exports = Backbone.Model.extend({
 //var ChatView = Backbone.View.extend({
 module.exports = Backbone.View.extend({
 
-    el: "#hapi_container",
+    tagName: 'ul',
+    id: 'connected_users',
+    //el: "#hapi_container",
 
     initialize: function() {
+        this.render();
         //set a refresh of the page upon changes
-        this.listenTo(this.model, "change:connectedUsers", this.render);
-        this.listenTo(this.model, "change:chatMessages", this.render);
+        //this.listenTo(this.collection, "change:models", this.render);
+        //this.listenTo(this.model, "change:chatMessages", this.render);
     },
 
-    template: _.template( $("#chat_messages-template").html() ),
+    //template: _.template( $("#chat_messages-template").html() ),
 
     events: {
 
@@ -64,9 +67,16 @@ module.exports = Backbone.View.extend({
     //},
 
     render: function() {
-        var model = this.model.toJSON();
-        var html = this.template(model);
-        this.$el.html(html);
+
+        this.collection.each(function (user) {
+            var userView = new UserView( { model: User });
+            this.$el.append(userView.render().el);
+        }, this);
+        return this;
+
+        //var model = this.collection.toJSON();
+        //var html = this.template(model);
+        //this.$el.html(html);
     }
 
 });
@@ -82,7 +92,7 @@ module.exports = Backbone.View.extend({
 //require view and module
 var ChatView = require('./chatView.js');
 var ChatModel = require('./chatModel.js');
-//var roomCollection = require('../../models/roomCollection.js');
+//var roomCollection = require('../../models/usersCollection.js');
 
 //create the model
 var chatModel = new ChatModel();
