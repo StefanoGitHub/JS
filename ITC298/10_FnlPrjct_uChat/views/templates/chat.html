@@ -60,7 +60,7 @@
 
    <script>
         //create client socket
-        var socket = io();
+        var socket = io('http://localhost:8000');
         var usersView = null;
         var chatModel = null;
         var chatView = null;
@@ -83,14 +83,12 @@
         });
 
         var ChatModel = Backbone.Model.extend({
-            defaults: {
-                connectedUsers: {},
-                chatMessages: []
-        },
+//            defaults: {
+//                connectedUsers: {},
+//                chatMessages: []
+//            },
             initialize: function() {
                 console.log('initialize chatModel', this);
-//                this.connectedUsers = room;
-//                this.chatMessages = room.chatMessages;
             }
         });
 
@@ -100,6 +98,7 @@
                 console.log('initialize usersView', this);
                 //set a refresh of the page upon changes
                 //this.collection.on('collection', this.render, this);
+                this.listenTo(this.model, "change:connectedUsers", this.updateUsersList);
                 //this.render();
             },
             //template: _.template( $("#chat_messages-template").html() ),
@@ -112,6 +111,9 @@
                 }, this);
 */
                 //return this;
+            },
+            updateUsersList: function () {
+                console.log('changes happened in usersList');
             }
         });
 
@@ -126,7 +128,7 @@
                 });
 */
                 //set a refresh of the page upon changes
-                //this.listenTo(this.model, "change:connectedUsers", this.updateChat);
+                this.listenTo(this.model, "change:chatMessages", this.updateChat);
                 //this.render();
             },
             //template: _.template( $("#chat_messages-template").html() ),
@@ -136,20 +138,22 @@
                 //return this;
             },
             updateChat: function() {
-
+                console.log('changes happened in chatMessages');
             }
         });
 
-//        socket.on('test', function (msg) {
-//            console.log('this is ' + msg);
-//        });
+        socket.on('test', function (msg) {
+            console.log('this is ' + msg);
+        });
 
         socket.on('createConnectedUsersList', function(room) {
             console.log('create collection view; room:', room);
-            chatModel = new ChatModel();
-            chatModel.connectedUsers = room;
-            chatModel.chatMessages = room.chatMessages;
-            usersView = new UsersView({ collection: chatModel.connectedUsers });
+            chatModel = new ChatModel({
+                //connectedUsers: room.connectedUsers,  ERROR? user disconnected and never reconnected
+                connectedUsers: room,
+                chatMessages: room.chatMessages
+            });
+            usersView = new UsersView({ collection: chatModel.get('connectedUsers') });
             chatView = new ChatView({ model: chatModel });
             //chatView.render();
         });

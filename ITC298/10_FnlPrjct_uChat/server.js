@@ -51,31 +51,35 @@ server.route([
 
 //shouldn't we create here the "default room"?
 var room = new UsersCollection();
-console.log('room:', room);
+//console.log('room:', room.toJSON());
 
 //set up the socket io server
 var io = require('socket.io')(server.listener);
 
 io.on('connection', function(socket){
     //create the user model, passing th socket obj
-    var user = new User(socket);
-    //and its view
-    //var userView = new UserView( { model: user });
-    //var chatView = new ChatView( { collection: room} );
-    socket.emit('test', 'a test');
-    socket.emit('createConnectedUsersList', room);
+    var user = new User({ socket: socket });
+    socket.emit();
+    //setTimeout(function(){
+    //    socket.emit('test', 'a test');
+    //}, 200);
+    //socket.emit('createConnectedUsersList', room);
+    //socket.emit('test', 'a test');
+
     //registering userConnection event
     socket.on('userConnection', function(userData) {
         user.verify(userData, function(err, authenticated) {
             if (err) { console.error(err); }
             if (authenticated) {
+                //if (!room.where({ username: userData.username })) {
+                console.log('condition?:', room.connectedUsers.indexOf(userData.username));
                 if (room.connectedUsers.indexOf(userData.username) < 0) {
                     room.addThis(user);
-                    //socket.emit('createConnectedUsersList', room);
-
+                    //socket.emit('test', 'a test');
+                    socket.emit('createConnectedUsersList', room);
+                    //console.log('room:', room.connectedUsers);
                 } else {
                     room.rejoin(user);
-
                 }
                 //console.log('connectedUsers (server)', room.connectedUsers);
             } else {
@@ -91,6 +95,7 @@ io.on('connection', function(socket){
     socket.on('logout', function(){
         user.logout(socket);
     });
+
 
     //registering saveChat event
     //socket.on('saveChat', function(chatData) {

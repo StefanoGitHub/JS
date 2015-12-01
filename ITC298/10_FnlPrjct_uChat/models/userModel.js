@@ -8,15 +8,17 @@ var db = require("../db");
 
 module.exports = Backbone.Model.extend({
 
-    defaults: {
-        username: '',
-        sessionID: '',
-        socket: {}
-    },
+    //defaults: {
+    //    username: '',
+    //    sessionID: ''
+    //    //socket: {}
+    //},
 
-    initialize: function(socket) {
+    initialize: function() {
         //associate the socket to the user obj
-        this.socket = socket;
+        //this.socket = socket;
+        this.socket = this.get("socket");
+        this.set("socket", null);
     },
 
     verify: function(userData, done) {
@@ -27,13 +29,17 @@ module.exports = Backbone.Model.extend({
             var authenticated = false;
             if (fromDB && fromDB.sessionID == userData.sessionID) {
                 //set user's properties
-                self.username = userData.username;
-                self.sessionID = userData.sessionID;
+                //self.username = userData.username;
+                //self.sessionID = userData.sessionID;
+                self.set('username', userData.username);
+                self.set('sessionID', userData.sessionID);
+                //console.log('user:', self.toJSON());
                 authenticated = true;
                 //register for chatMessage event
                 self.socket.on('chatMessage', function(msg) {
+                    console.log('chatMessage from user:', msg)
                     //trigger a chatMessage event that will be caught by the room
-                    self.trigger('chatMessage', self.username + ': ' + msg);
+                    self.trigger('chatMessage', self.get('username') + ': ' + msg);
                     //console.log('message: ' + msg);
                 });
                 self.socket.on('disconnect', function() {

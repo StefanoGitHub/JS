@@ -61,12 +61,12 @@ var PeopleView = Backbone.View.extend({
 
 var person = new Person;
 var peopleCollection = new PeopleCollection([
-//    person,
-//    {
-//        name: 'Thomas',
-//        age: 33,
-//        occupation: 'teacher'
-//    }
+    person,
+    {
+        name: 'Thomas',
+        age: 33,
+        occupation: 'teacher'
+    }
     ]);
 var peopleView = new PeopleView({collection: peopleCollection});
 

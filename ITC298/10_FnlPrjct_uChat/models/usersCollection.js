@@ -11,9 +11,10 @@ module.exports = Backbone.Collection.extend({
 
     model: User,
     connectedUsers: [],
-    messages: [],
+    messages: ['hello', 'uChat'],
 
     initialize: function() {
+        //console.log('messages:', this.messages);
         //register for events
         this.on('chatMessage', function(chatMessage) {
             console.log('chatMessage: '+ chatMessage);
@@ -21,31 +22,36 @@ module.exports = Backbone.Collection.extend({
             this.models.forEach(function(user) {
                 user.socket.emit('chatMessage', chatMessage); //route the event out to all connected User models
             });
+            console.log('messages: '+ this.messages);
         }, this); //sets the `this` value inside the callback
 
-        this.on('joinMessage', function(newUser, chatMessage) {
-            //console.log('joinMessage: '+ newUser + chatMessage);
-            this.messages.push(newUser + ' ' + chatMessage);
+        this.on('joinMessage', function(newUser) {
+            var username = newUser.get('username');
+            var joinMessage = username + ' joined the conversation';
+            console.log('joinMessage: '+ joinMessage);
+            this.messages.push(joinMessage);
             //inform all other users of the joining
-            newUser.socket.broadcast.emit('chatMessage', newUser.username + ' ' + chatMessage);
+            newUser.socket.broadcast.emit('chatMessage', joinMessage);
         }, this);
 
-        this.on('welcomeMessage', function(user, message) {
+        this.on('welcomeMessage', function(newUser) {
             //welcome only the joining user
-            user.socket.emit('chatMessage', message);
+            newUser.socket.emit('chatMessage', 'Welcome to the conversation!');
+            console.log(newUser.get('username') + ': Welcome to the conversation!');
         }, this);
 
         this.on('logout', function(user) {
             this.remove(user);
             this.updateConnectedUsers();
-            console.log('models @ logout', this.models.length);
-            console.log('logout', this.connectedUsers);
+            //console.log('models @ logout', this.models.length);
+            //console.log('logout', this.models);
         }, this);
 
         this.on('disconnect', function(user) {
             this.remove(user);
-            console.log('models @ disconnect', this.models.length);
-            console.log('disconnect', this.connectedUsers);
+            console.log(user.get('username'), 'disconnected');
+            //console.log('models @ disconnect', this.models.length);
+            //console.log('disconnect', this.models);
         }, this);
 
     },
@@ -54,28 +60,30 @@ module.exports = Backbone.Collection.extend({
         //add the user to the collection/room
         this.add(user);
         //inform other users
-        user.trigger('joinMessage', user, ' joined the conversation');
+        user.trigger('joinMessage', user);
         //welcome the user
-        user.trigger('welcomeMessage', user, 'Welcome to the conversation!');
+        user.trigger('welcomeMessage', user);
         this.updateConnectedUsers();
-        console.log('models @ addThis', this.models.length);
-        console.log('addThis', this.connectedUsers);
+        //console.log(this.models.length, ' models @ addThis: ', this.models);
     },
 
     rejoin: function (user) {
         //re-add user to chat, without fuss
         this.add(user);
-        this.updateConnectedUsers();
+
+        console.log('after rejoin', this.models)
+        //console.log(this.models.length, ' models @ rejoin: ', this.models);
     },
 
     updateConnectedUsers: function () {
         var users = [];
         this.models.forEach(function(user) {
-            users.push(user.username);
+            var username = user.get('username');
+            users.push(username);
         });
         this.connectedUsers = users;
-        console.log('models @ updateConnectedUsers', this.models.length);
-        console.log('updateConnectedUsers', this.connectedUsers);
+        //console.log('models @ updateConnectedUsers', this.models.length);
+        //console.log('updateConnectedUsers', this.models);
         //return this.connectedUsers;
     }
 
