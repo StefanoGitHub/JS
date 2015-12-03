@@ -69,24 +69,31 @@ io.on('connection', function(socket){
         user.verify(userData, function(err, authenticated) {
             if (err) { console.error(err); }
             if (authenticated) {
-                if (room.connectedUsers.indexOf(userData.username) < 0) {
-                    //if the user was not already connected
-                    room.addUser(user);
-                } else {
-                    //otherwise re-add user to chat, without fuss
-                    room.rejoin(user);
-                }
+                //if (room.connectedUsers.indexOf(userData.username) < 0) {
+                //if the user was not already connected
+                room.connectUser(user);
+                //}
+                //else {
+                //    //otherwise re-add user to chat, without fuss
+                //    room.rejoin(user);
+                //}
             }
             //if user not authenticated log out
             else {
-                user.logout(socket);
+                user.disconnectUser(socket);
             }
         });
     });
 
     //registering logout event
     socket.on('logout', function() {
-        user.logout(socket);
+        //user.logout(socket);
+        room.disconnectUser(user);
+    });
+
+    socket.on('disconnect', function() {
+        //user.logout(socket);
+        room.disconnectUser(user);
     });
 
 });

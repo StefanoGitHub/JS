@@ -5,7 +5,7 @@
 
 <script type="text/html" id="user-template">
     <% list.forEach(function(user) { %>
-        <li> <%= user.username %> </li>
+        <li> <%= user.username %>: <span><%= user.status %></span></li>
     <% }) %>
 </script>
 <!-- end templates -->
@@ -63,6 +63,7 @@
         //when history has been loaded, register for new messages
         //when receive a chatMessage display it
         socket.on('chatMessage', function(username, msg){
+            console.log(msg);
             var messageTemplate = _.template( $("#chatMessage-template").html() );
             var chatMessage = messageTemplate({
                 username: username,
@@ -87,13 +88,14 @@
 
     //when the list of connected users (roomCollection) changes, update the list
     socket.on('updateUsersList', function(room) {
+        console.log(room);
         var userTemplate = _.template( $("#user-template").html() );
         var userList = userTemplate({ list: room });
         $('#connected_users').html(userList);
     });
 
     $('#logout').on('click', function(){
-        socket.emit('logout');
+        //socket.emit('logout');
         location.assign("/logout");
     });
 

@@ -8,6 +8,10 @@ var db = require("../db");
 
 module.exports = Backbone.Model.extend({
 
+    defaults: {
+        status: 'offline'
+    },
+
     setSocket: function(socket) {
         this.socket = socket;
     },
@@ -23,6 +27,7 @@ module.exports = Backbone.Model.extend({
                 self.set('username', userData.username);
                 self.set('sessionID', userData.sessionID);
                 authenticated = true;
+                //self.connect();
                 //register for chatMessage event
                 self.socket.on('chatMessage', function(msg) {
                     //trigger a chatMessage event that will be caught by the room
@@ -43,10 +48,18 @@ module.exports = Backbone.Model.extend({
         //delete session from DB
         db.deleteSession (self.username, function () {
             //emit event that will delete the user from the room collection
-            self.trigger('logout', self);
+            //self.trigger('logout', self);
             //disconnect the user socket
             socket.disconnect();
         });
+    },
+
+    disconnect: function () {
+        this.set('status', 'offline');
+    },
+    connect: function () {
+        this.set('status', 'online');
     }
+
 
 });

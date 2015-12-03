@@ -10,7 +10,7 @@ var db = require("../db");
 module.exports = Backbone.Collection.extend({
 
     model: User,
-    connectedUsers: [],
+    //connectedUsers: [],
 
     initialize: function() {
         //register for events
@@ -21,30 +21,7 @@ module.exports = Backbone.Collection.extend({
             });
         }, this); //sets the `this` value inside the callback
 
-        this.on('joinMessage', function(newUser) {
-            var username = newUser.get('username');
-            newUser.trigger('chatMessage', username, ' joined the conversation');
-        }, this);
-
-        this.on('welcomeMessage', function(newUser) {
-            //welcome only the joining user
-            var username = newUser.get('username');
-            newUser.socket.emit('chatMessage', null, 'Welcome to the conversation ' + username + '!');
-        }, this);
-
-        this.on('logout', function(loggingOutUser) {
-            var username = loggingOutUser.get('username');
-            loggingOutUser.trigger('chatMessage', username, 'left the conversation');
-            this.remove(loggingOutUser);
-            this.updateConnectedUsers();
-        }, this);
-
-        this.on('disconnect', function(user) {
-            this.remove(user);
-        }, this);
-
-        //update the user list on every change of elements in the collection
-        this.on('update', function() {
+        this.on('updateUsersList', function() {
             var self = this;
             this.models.forEach(function(user) {
                 //route the event out to all connected User models
@@ -52,42 +29,38 @@ module.exports = Backbone.Collection.extend({
             });
         }, this);
 
+        this.on('disconnect', function(user) {
+        }, this);
+
     },
 
-    addUser: function (user) {
-        //add the user to the collection/room
-        this.add(user);
-        var self = this;
+    connectUser: function (user) {
+        console.log('this:', this);
+        console.log('user:', user.toJSON());
+        console.log('findWhere:', this.findWhere({username: user.username}));
+        //if he/she has never joined the chat, add the user to the collection/room
+        //if (!this.findWhere({username: user.username})) {
+            this.add(user);
+        //}
+        console.log('findWhere2:', this.findWhere({username: user.username}));
+        console.log('this2:', this);
+
+        user.connect();
+        //this.listenTo(user, "change", this.updateUserList);
+        this.trigger('updateUsersList');
+        //var self = this;
         db.getMessages(function(err, dataFromDB) {
             if (err) { console.error(err); }
             //load last 10 messages of the current chat
             user.socket.emit('loadChat', dataFromDB);
-            //inform other users
-            user.trigger('joinMessage', user);
-            //welcome the user
-            user.trigger('welcomeMessage', user);
-            self.updateConnectedUsers();
         });
     },
 
-    rejoin: function (user) {
-        //re-add user to chat, without fuss
-        this.add(user);
-        //send chat history to client
-        db.getMessages(function(err, dataFromDB) {
-            if (err) { console.error(err); }
-            user.socket.emit('loadChat', dataFromDB);
-        });
-
-    },
-
-    updateConnectedUsers: function () {
-        var users = [];
-        this.models.forEach(function(user) {
-            var username = user.get('username');
-            users.push(username);
-        });
-        this.connectedUsers = users;
+    disconnectUser: function (user) {
+        user.disconnect();
+        this.trigger('updateUsersList');
+        user.socket.disconnect();
     }
+
 
 });
