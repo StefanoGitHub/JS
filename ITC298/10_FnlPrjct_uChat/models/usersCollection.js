@@ -5,6 +5,7 @@
 
 var Backbone = require("backbone");
 var User = require("./userModel");
+var db = require("../db");
 
 module.exports = Backbone.Collection.extend({
 
@@ -22,20 +23,20 @@ module.exports = Backbone.Collection.extend({
 
         this.on('joinMessage', function(newUser) {
             var username = newUser.get('username');
-            //inform all other users of the joining
-            newUser.socket.broadcast.emit('chatMessage', username, ' joined the conversation');
+            newUser.trigger('chatMessage', username, ' joined the conversation');
         }, this);
 
         this.on('welcomeMessage', function(newUser) {
             //welcome only the joining user
-            newUser.socket.emit('chatMessage', null, 'Welcome to the conversation!');
+            var username = newUser.get('username');
+            newUser.socket.emit('chatMessage', null, 'Welcome to the conversation ' + username + '!');
         }, this);
 
-        this.on('logout', function(user) {
+        this.on('logout', function(loggingOutUser) {
+            var username = loggingOutUser.get('username');
+            loggingOutUser.trigger('chatMessage', username, 'left the conversation');
+            this.remove(loggingOutUser);
             this.updateConnectedUsers();
-            var username = user.get('username');
-            user.socket.broadcast.emit('chatMessage', username, 'left the conversation');
-            this.remove(user);
         }, this);
 
         this.on('disconnect', function(user) {
@@ -49,23 +50,35 @@ module.exports = Backbone.Collection.extend({
                 //route the event out to all connected User models
                 user.socket.emit('updateUsersList', self.toJSON());
             });
-        }, this); //sets the `this` value inside the callback
+        }, this);
 
     },
 
-    addThis: function (user) {
+    addUser: function (user) {
         //add the user to the collection/room
         this.add(user);
-        //inform other users
-        user.trigger('joinMessage', user);
-        //welcome the user
-        user.trigger('welcomeMessage', user);
-        this.updateConnectedUsers();
+        var self = this;
+        db.getMessages(function(err, dataFromDB) {
+            if (err) { console.error(err); }
+            //load last 10 messages of the current chat
+            user.socket.emit('loadChat', dataFromDB);
+            //inform other users
+            user.trigger('joinMessage', user);
+            //welcome the user
+            user.trigger('welcomeMessage', user);
+            self.updateConnectedUsers();
+        });
     },
 
     rejoin: function (user) {
         //re-add user to chat, without fuss
         this.add(user);
+        //send chat history to client
+        db.getMessages(function(err, dataFromDB) {
+            if (err) { console.error(err); }
+            user.socket.emit('loadChat', dataFromDB);
+        });
+
     },
 
     updateConnectedUsers: function () {

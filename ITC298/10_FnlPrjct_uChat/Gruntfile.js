@@ -25,7 +25,7 @@ module.exports = function(grunt) {
         nodemon: {
             //nodemon starts the server and restart it after every change
             dev: {
-                script: "server.js"
+                script: "start.js"
             }
         },
 

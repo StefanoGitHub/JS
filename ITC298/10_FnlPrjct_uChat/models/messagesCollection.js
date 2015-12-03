@@ -23,14 +23,7 @@ module.exports = Backbone.Collection.extend({
             $username: username,
             $message: msg,
             $timestamp: timestamp
-        }
-
-            //test
-            , function() {
-            console.log('message inserted');
-        }
-
-        );
+        });
     }
 
 });

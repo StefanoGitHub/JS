@@ -1,6 +1,3 @@
-/**
- * Created by Stefano on 11/08/15.
- */
 //db.js
 
 var sqlite = require("sqlite3");
@@ -87,70 +84,12 @@ module.exports = {
             done();
         });
     },
-    getMessages : function(some, done) {
+    getMessages : function(done) {
         done = done || function(){};
-        db.all("SELECT * FROM t_users", function (err, dataFromDB) {
+        db.all("SELECT * FROM t_messages ORDER BY timestamp", function (err, dataFromDB) {
             if (err) { console.error(err); }
             done(err, dataFromDB);
         });
     }
-
-
-    /****************** CHAT HISTORY *******************/
-
-    //deleteChatHistory: function(userName, done) {
-    //    //console.log('delete session',  username);
-    //    db.run("DELETE FROM t_sessions WHERE username = $username;", {
-    //        $username: userName
-    //    }, function () {
-    //        if (done) {
-    //            //console.log('deleted');
-    //            done();
-    //        }
-    //        //console.log('deleted2');
-    //    });
-    //},
-    //getChatHistory: function(username, done) {
-    //    done = done || function(){}; //err, historyFromDB
-    //    db.get("SELECT chat_history FROM t_users WHERE username = $username", {
-    //        $username: username
-    //    }, function (err, historyFromDB) {
-    //        if (err) { console.error(err); }
-    //        console.log('from DB', historyFromDB);
-    //        done(err, historyFromDB);
-    //    });
-    //},
-    //
-    //saveChatHistory: function(chatData, doneSaving) {
-    //    console.log('chatData:', chatData);
-    //    async.waterfall([
-    //        function(callback) {
-    //            database.getChatHistory(chatData.username, function (err, historyFromDB) {
-    //                if (err) { console.error(err); }
-    //                console.log('history:', historyFromDB);
-    //                callback(null, historyFromDB);
-    //            });
-    //        },
-    //        function(historyFromDB, callback) {
-    //            if (!historyFromDB) {
-    //                historyFromDB = '';
-    //            }
-    //            var newHistory = historyFromDB + chatData.newMessages;
-    //            db.run("UPDATE t_users SET chat_history = $newChatHistory WHERE username = $username", {
-    //                $username: chatData.username,
-    //                $newChatHistory: newHistory
-    //            }, function (err) {
-    //                if (err) { console.error(err); }
-    //                console.log('chat saved1 (' + newHistory + ')');
-    //                callback(null);
-    //            });
-    //        }
-    //    ], function(err) {
-    //        if (err) { console.error(err); }
-    //        console.log('chat saved 2');
-    //        doneSaving();
-    //    });
-    //
-    //}
 
 };

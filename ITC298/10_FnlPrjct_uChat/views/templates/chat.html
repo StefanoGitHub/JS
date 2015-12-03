@@ -11,10 +11,8 @@
 <!-- end templates -->
 
 
-
     <div id="chat">
-        <div id="welcome">Welcome <span>{{username}}</span>! <br>
-                You are now connected</div>
+        <div id="welcome">Welcome <span>{{username}}</span>! You are now connected</div>
 
         <ul id="chat_messages">
             <!--loaded content from roomCollection-->
@@ -30,7 +28,8 @@
     <button id="logout">log out</button>
 
     <aside>
-        <ul id="userList">
+        Connected users:
+        <ul id="connected_users">
             <!--loaded content from messagesCollection-->
         </ul>
     </aside>
@@ -38,7 +37,6 @@
 
 
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
 
 <script>
@@ -46,6 +44,34 @@
     var socket = io('http://localhost:8000');
     //connect user
     socket.emit("userConnection", { username: '{{username}}', sessionID: '{{sessionID}}' });
+
+    socket.on('loadChat', function(dataFromDB){
+        if (dataFromDB) {
+            //get the last 10 messages of the chat so far
+            var recentChatHistory = dataFromDB.slice(-10, dataFromDB.length);
+            var messageTemplate = _.template($("#chatMessage-template").html());
+            var chatHistory = $('#chat_messages');
+            recentChatHistory.forEach(function (message) {
+                var previousChatMessages = messageTemplate({
+                    username: message.username,
+                    msg: message.message
+                });
+                chatHistory.append(previousChatMessages);
+            });
+        }
+
+        //when history has been loaded, register for new messages
+        //when receive a chatMessage display it
+        socket.on('chatMessage', function(username, msg){
+            var messageTemplate = _.template( $("#chatMessage-template").html() );
+            var chatMessage = messageTemplate({
+                username: username,
+                msg: msg
+            });
+            $('#chat_messages').append(chatMessage);
+        });
+
+    });
 
     //whenever the user send a messages, generate the chat message event
     var $message_area = $('#msg_area');
@@ -55,15 +81,15 @@
         return false;
     });
 
-    //when receive a chatMessage display it
-    socket.on('chatMessage', function(username, msg){
-        console.log(username, msg);
-        var template = _.template( $("#chatMessage-template").html() );
-        var chatMessage = template({
-            username: username,
-            msg: msg
-        });
-        $('#chat_messages').append(chatMessage);
+//    $( "#chat_input_panel" ).keypress(function() {
+//        console.log( 'typing' );
+//    });
+
+    //when the list of connected users (roomCollection) changes, update the list
+    socket.on('updateUsersList', function(room) {
+        var userTemplate = _.template( $("#user-template").html() );
+        var userList = userTemplate({ list: room });
+        $('#connected_users').html(userList);
     });
 
     $('#logout').on('click', function(){
@@ -71,12 +97,4 @@
         location.assign("/logout");
     });
 
-    //when the list of connected users (roomCollection) changes, update the list
-    socket.on('updateUsersList', function(room) {
-        var template = _.template( $("#user-template").html() );
-        var userList = template({ list: room });
-        $('#userList').html(userList);
-    });
-
 </script>
-
