@@ -5,19 +5,18 @@
 /**
  * /views - html templates go here
  * /public - css, js, images ...
+ * /models - backbone models
+ * /collections - backbone collections
  * db.js - start and config SQLite
  * */
-
 
 //set up the server
 var hapi = require("hapi");
 var server = new hapi.Server();
 var User = require('./models/userModel');
-//var Backbone = require("backbone");
 
-//var UserView = require('./models/userView');
 var UsersCollection = require('./models/usersCollection');
-//var ChatView = require('./public/js/chatView');
+var MessagesCollection = require('./models/messagesCollection');
 
 server.connection({ port: 8000 });
 server.views({
@@ -49,40 +48,40 @@ server.route([
     { method: "GET", path: "/public/{param*}", handler: { directory: { path: "public" } } }
 ]);
 
-//shouldn't we create here the "default room"?
+
+
+
+
+//create users collection
 var room = new UsersCollection();
-//console.log('room:', room.toJSON());
+//create messages collection
+var conversation = new MessagesCollection();
+conversation.listenTo(room, "chatMessage", conversation.appendMsg);
 
 //set up the socket io server
 var io = require('socket.io')(server.listener);
 
 io.on('connection', function(socket){
     //create the user model, passing th socket obj
-    var user = new User({ socket: socket });
-    socket.emit();
-    //setTimeout(function(){
-    //    socket.emit('test', 'a test');
-    //}, 200);
-    //socket.emit('createConnectedUsersList', room);
-    //socket.emit('test', 'a test');
+    var user = new User();
+    user.setSocket(socket);
+    socket.emit(); //ANOMALY: this used to avoid loss of first emit, somehow loss by the system
 
     //registering userConnection event
     socket.on('userConnection', function(userData) {
         user.verify(userData, function(err, authenticated) {
             if (err) { console.error(err); }
             if (authenticated) {
-                //if (!room.where({ username: userData.username })) {
-                console.log('condition?:', room.connectedUsers.indexOf(userData.username));
+                //console.log('condition?:', room.connectedUsers.indexOf(userData.username));
                 if (room.connectedUsers.indexOf(userData.username) < 0) {
                     room.addThis(user);
-                    //socket.emit('test', 'a test');
-                    socket.emit('createConnectedUsersList', room);
-                    //console.log('room:', room.connectedUsers);
+                    //socket.emit('createConnectedUsersList', room.toJSON());
                 } else {
                     room.rejoin(user);
                 }
-                //console.log('connectedUsers (server)', room.connectedUsers);
-            } else {
+            }
+            //is this actually necessary???
+            else {
 
                 // !!!!!!!! check when we get here and figure out what to do !!!!!!!!!!!
                 console.log('ERROR server.js line:76');
@@ -95,31 +94,5 @@ io.on('connection', function(socket){
     socket.on('logout', function(){
         user.logout(socket);
     });
-
-
-    //registering saveChat event
-    //socket.on('saveChat', function(chatData) {
-    //    //console.log('chatData:', chatData);
-    //
-    //    db.saveChatHistory(chatData, function () {
-    //        console.log('chat saved 3');
-    //        io.emit('chat message', 'chat saved!');
-    //        //io.emit('chat saved', 'chat saved!'); //here should popup a message "chat saved"
-    //    });
-    //
-    //    //db.getChatHistory(chatData.username, function (historyFromDB) {
-    //    //    console.log('historyFromDB', historyFromDB);
-    //    //});
-    //});
-
-    //socket.on('disconnect', function(){
-
-        // !!!!!!! ERROR !!!!!!!!!!!!!!!
-        // need to do something otherwise at any page reload we add a new user...
-
-        //user.clean(socket);
-        //socket.emit('chatMessage', user.username + ' left the conversation')
-        //user.logout(socket);
-    //});
 
 });

@@ -24,7 +24,7 @@ var Person = Backbone.Model.extend({
     work: function() {
         return this.get(name) + 'is working';
     }
-})
+});
 
 var PersonView = Backbone.View.extend({
     tagName: 'li',
@@ -42,12 +42,13 @@ var PersonView = Backbone.View.extend({
 
 var PeopleCollection = Backbone.Collection.extend({
     model: Person
-})
+});
 
 var PeopleView = Backbone.View.extend({
     el: "#people",
     initialize: function() {
-        console.log(this);
+        var models = this.collection.models;
+        console.log('collection:', models);
         this.render();
     },
     render: function() {

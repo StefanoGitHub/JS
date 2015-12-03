@@ -6,53 +6,50 @@
 var Backbone = require("backbone");
 var User = require("./userModel");
 
-//var UsersCollection = Backbone.Collection.extend({
 module.exports = Backbone.Collection.extend({
 
     model: User,
     connectedUsers: [],
-    messages: ['hello', 'uChat'],
 
     initialize: function() {
-        //console.log('messages:', this.messages);
         //register for events
-        this.on('chatMessage', function(chatMessage) {
-            console.log('chatMessage: '+ chatMessage);
-            this.messages.push(chatMessage);
+        this.on('chatMessage', function(username, msg) {
             this.models.forEach(function(user) {
-                user.socket.emit('chatMessage', chatMessage); //route the event out to all connected User models
+                //route the event out to all connected User models
+                user.socket.emit('chatMessage', username, msg);
             });
-            console.log('messages: '+ this.messages);
         }, this); //sets the `this` value inside the callback
 
         this.on('joinMessage', function(newUser) {
             var username = newUser.get('username');
-            var joinMessage = username + ' joined the conversation';
-            console.log('joinMessage: '+ joinMessage);
-            this.messages.push(joinMessage);
             //inform all other users of the joining
-            newUser.socket.broadcast.emit('chatMessage', joinMessage);
+            newUser.socket.broadcast.emit('chatMessage', username, ' joined the conversation');
         }, this);
 
         this.on('welcomeMessage', function(newUser) {
             //welcome only the joining user
-            newUser.socket.emit('chatMessage', 'Welcome to the conversation!');
-            console.log(newUser.get('username') + ': Welcome to the conversation!');
+            newUser.socket.emit('chatMessage', null, 'Welcome to the conversation!');
         }, this);
 
         this.on('logout', function(user) {
-            this.remove(user);
             this.updateConnectedUsers();
-            //console.log('models @ logout', this.models.length);
-            //console.log('logout', this.models);
+            var username = user.get('username');
+            user.socket.broadcast.emit('chatMessage', username, 'left the conversation');
+            this.remove(user);
         }, this);
 
         this.on('disconnect', function(user) {
             this.remove(user);
-            console.log(user.get('username'), 'disconnected');
-            //console.log('models @ disconnect', this.models.length);
-            //console.log('disconnect', this.models);
         }, this);
+
+        //update the user list on every change of elements in the collection
+        this.on('update', function() {
+            var self = this;
+            this.models.forEach(function(user) {
+                //route the event out to all connected User models
+                user.socket.emit('updateUsersList', self.toJSON());
+            });
+        }, this); //sets the `this` value inside the callback
 
     },
 
@@ -64,15 +61,11 @@ module.exports = Backbone.Collection.extend({
         //welcome the user
         user.trigger('welcomeMessage', user);
         this.updateConnectedUsers();
-        //console.log(this.models.length, ' models @ addThis: ', this.models);
     },
 
     rejoin: function (user) {
         //re-add user to chat, without fuss
         this.add(user);
-
-        console.log('after rejoin', this.models)
-        //console.log(this.models.length, ' models @ rejoin: ', this.models);
     },
 
     updateConnectedUsers: function () {
@@ -82,11 +75,6 @@ module.exports = Backbone.Collection.extend({
             users.push(username);
         });
         this.connectedUsers = users;
-        //console.log('models @ updateConnectedUsers', this.models.length);
-        //console.log('updateConnectedUsers', this.models);
-        //return this.connectedUsers;
     }
 
 });
-
-//module.exports = UsersCollection;

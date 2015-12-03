@@ -31,12 +31,12 @@ module.exports = function(grunt) {
 
         watch: {
             //watch performs defined tasks whenever changes are saved in matching files
-            hapi: {
-                //any html
-                files: [ "public/js/main.js", "public/js/chatView.js", "public/js/chatModel.js"],
-                //no tasks -> just live reload
-                tasks: ["browserify"]
-            },
+            //hapi: {
+            //    //any html
+            //    files: [ "public/js/main.js", "public/js/chatView.js", "public/js/chatModel.js"],
+            //    //no tasks -> just live reload
+            //    tasks: ["browserify"]
+            //},
 
             everything: {
                 //any html
@@ -49,6 +49,7 @@ module.exports = function(grunt) {
             options: { livereload: true }
         },
 
+/*
         browserify: {
             //browserify generates a single js file from the different js files in the js folder
             dist: {
@@ -56,11 +57,11 @@ module.exports = function(grunt) {
                 dest: "public/js/bundle.js"
             }
         }
+*/
     });
 
     //default task(s), executed when run "$ grunt"
-    grunt.registerTask("default", ["concurrent", "browserify"]);
-    //grunt.registerTask("default", "concurrent");
-
+    //grunt.registerTask("default", ["concurrent", "browserify"]);
+    grunt.registerTask("default", "concurrent");
 
 };

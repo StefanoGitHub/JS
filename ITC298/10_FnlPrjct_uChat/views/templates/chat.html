@@ -1,26 +1,15 @@
-<!--<script type="text/html" id="chat_messages-template">-->
-    <!--<ul id="chat_messages">-->
-        <!--<% _.each( chatMessages, function( message ){ %>-->
-        <!--<li><%= message %></li>-->
-        <!--<% }); %>-->
-    <!--</ul>-->
+<!-- templates -->
+<script type="text/html" id="chatMessage-template">
+    <li><span><%= username %></span> <%= msg %></li>
+</script>
 
-    <!--<aside>-->
-        <!--<div id="users_container">-->
-            <!--Connected users:-->
-            <!--<ul id="connected_users">-->
-                <!--<% _.each( connectedUsers, function( user ){ %>-->
-                <!--<li><%= user %></li>-->
-                <!--<% }); %>-->
-            <!--</ul>-->
-        <!--</div>-->
-    <!--</aside>-->
+<script type="text/html" id="user-template">
+    <% list.forEach(function(user) { %>
+        <li> <%= user.username %> </li>
+    <% }) %>
+</script>
+<!-- end templates -->
 
-<!--</script>-->
-
-<!--<script type="text/html" id="user-template">-->
-    <!--<li><%= username %></li>-->
-<!--</script>-->
 
 
     <div id="chat">
@@ -28,7 +17,7 @@
                 You are now connected</div>
 
         <ul id="chat_messages">
-            <!--injected content from chatView.js-->
+            <!--loaded content from roomCollection-->
         </ul>
 
         <div id="chat_input_panel">
@@ -40,12 +29,9 @@
     </div>
     <button id="logout">log out</button>
 
-    <button id="save-chat">save chat</button>
-    <button id="delete-chat">delete chat</button>
-
     <aside>
         <ul id="userList">
-            <!--injected content from usersView.js-->
+            <!--loaded content from messagesCollection-->
         </ul>
     </aside>
 
@@ -54,144 +40,43 @@
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.3/backbone-min.js"></script>
 
-<!--<script type="text/javascript" src="/public/js/bundle.js">//browserified (watchified) script</script>-->
+<script>
+    //create client socket
+    var socket = io('http://localhost:8000');
+    //connect user
+    socket.emit("userConnection", { username: '{{username}}', sessionID: '{{sessionID}}' });
 
-   <script>
-        //create client socket
-        var socket = io('http://localhost:8000');
-        var usersView = null;
-        var chatModel = null;
-        var chatView = null;
+    //whenever the user send a messages, generate the chat message event
+    var $message_area = $('#msg_area');
+    $('#chat-form').submit(function(){
+        socket.emit('chatMessage', $message_area.val());
+        $message_area.val('');
+        return false;
+    });
 
-        //connect user
-        socket.emit("userConnection", { username: '{{username}}', sessionID: '{{sessionID}}' });
-
-        var UserView = Backbone.View.extend({
-            tagName: 'li',
-            initialize: function() {
-                this.render();
-                //this.listenTo(this.model, "change:connectedUsers", this.render);
-            },
-            render: function() {
-                //console.log('from render UserView', this.model.get('username'));
-                //var html = this.template(this.model.get('username'));
-                //console.log( this.$el.html(this.model.get('username')) );
-                return this;
-            }
+    //when receive a chatMessage display it
+    socket.on('chatMessage', function(username, msg){
+        console.log(username, msg);
+        var template = _.template( $("#chatMessage-template").html() );
+        var chatMessage = template({
+            username: username,
+            msg: msg
         });
+        $('#chat_messages').append(chatMessage);
+    });
 
-        var ChatModel = Backbone.Model.extend({
-//            defaults: {
-//                connectedUsers: {},
-//                chatMessages: []
-//            },
-            initialize: function() {
-                console.log('initialize chatModel', this);
-            }
-        });
+    $('#logout').on('click', function(){
+        socket.emit('logout');
+        location.assign("/logout");
+    });
 
-        var UsersView = Backbone.View.extend({
-            el: "#userList",
-            initialize: function() {
-                console.log('initialize usersView', this);
-                //set a refresh of the page upon changes
-                //this.collection.on('collection', this.render, this);
-                this.listenTo(this.model, "change:connectedUsers", this.updateUsersList);
-                //this.render();
-            },
-            //template: _.template( $("#chat_messages-template").html() ),
-            render: function() {
-                //console.log('render usersList', this.model);
-/*
-                this.collection.each(function (user) {
-                    var userView = new UserView( { model: user });
-                    this.$el.append(userView.render().el);
-                }, this);
-*/
-                //return this;
-            },
-            updateUsersList: function () {
-                console.log('changes happened in usersList');
-            }
-        });
+    //when the list of connected users (roomCollection) changes, update the list
+    socket.on('updateUsersList', function(room) {
+        var template = _.template( $("#user-template").html() );
+        var userList = template({ list: room });
+        $('#userList').html(userList);
+    });
 
-        var ChatView = Backbone.View.extend({
-            el: "#chat_messages",
-            initialize: function() {
-                console.log('initialize chatView', this);
-/*
-                var history = this.model.get('chatMessages');
-                history.forEach(function(message) {
-                    this.$el.html(message);
-                });
-*/
-                //set a refresh of the page upon changes
-                this.listenTo(this.model, "change:chatMessages", this.updateChat);
-                //this.render();
-            },
-            //template: _.template( $("#chat_messages-template").html() ),
-            render: function() {
-                //console.log('render chat:', this);
-                //create the ul with all the messages
-                //return this;
-            },
-            updateChat: function() {
-                console.log('changes happened in chatMessages');
-            }
-        });
-
-        socket.on('test', function (msg) {
-            console.log('this is ' + msg);
-        });
-
-        socket.on('createConnectedUsersList', function(room) {
-            console.log('create collection view; room:', room);
-            chatModel = new ChatModel({
-                //connectedUsers: room.connectedUsers,  ERROR? user disconnected and never reconnected
-                connectedUsers: room,
-                chatMessages: room.chatMessages
-            });
-            usersView = new UsersView({ collection: chatModel.get('connectedUsers') });
-            chatView = new ChatView({ model: chatModel });
-            //chatView.render();
-        });
-
-
-        var $message_area = $('#msg_area');
-        //whenever the user send a messages, generate the chat message event
-        $('#chat-form').submit(function(){
-            socket.emit('chatMessage', $message_area.val());
-            $message_area.val('');
-            return false;
-        });
-
-//        socket.on('chatMessage', function(msg){
-//            $('#messages').append($('<li>').text(msg));
-//        });
-
-        $('#logout').on('click', function(){
-            //var user = $('#username').val();
-            //console.log('{{username}}:', 'userDisconnection');
-            socket.emit('logout');
-            location.assign("/logout");
-        });
-
-//        var $messages = $('#messages');
-//        $('#save-chat').on('click', function(){
-//            var newMessages = ($messages.html()) ? $messages.html() : '';
-//            console.log('username:', '{{username}}', 'newMessages:', newMessages);
-////            socket.emit('saveChat', {
-////                username: '{{username}}',
-////                newMessages: newMessages
-////            });
-//            socket.emit('saveChat', newMessages);
-//        });
-//
-//        $('#delete-chat').on('click', function(username){
-//
-//        });
-
-    </script>
+</script>
 

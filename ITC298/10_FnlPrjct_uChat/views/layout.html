@@ -8,15 +8,13 @@
     <link rel="stylesheet" href="/public/css/style.css">
     <link rel="shortcut icon" href="/public/images/favicon.ico" type="image/icon" >
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
-</head>
 
 <body>
 
     <h1><span id="uChat">uChat</span> messenger</h1>
 
     <div id="chat_body">
-        <!-- injected content -->
+        <!-- hapi.js injected content -->
 
         {{{ content }}}
 
@@ -28,12 +26,6 @@
         var year = new Date().getFullYear();
         document.getElementById('footer').innerHTML += year;
     </script>
-    <!--<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>-->
-    <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>-->
-    <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>-->
-    <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.3/backbone-min.js"></script>-->
-
-    <!--<script type="text/javascript" src="/public/js/bundle.js">//browserified (watchified) script</script>-->
 
     <script src="//localhost:35729/livereload.js"></script>
 </body>
