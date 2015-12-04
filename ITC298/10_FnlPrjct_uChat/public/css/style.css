@@ -9,7 +9,6 @@ body {
     width: 80%;
     margin: 0 auto;
     max-width: 600px;
-    /*min-width: 240px;*/
     font: 1em arial, sans-serif;
     text-align: center;
 }
@@ -80,22 +79,20 @@ footer{
     color: slategrey;
 }
 #chat_messages {
-    font-size: .9em;
+    font-size: .8em;
     border: 1px solid lightgrey;
     height: 300px;
     overflow-y: scroll;
     text-align: left;
     list-style-type: none;
 }
-#chat_messages li { padding: 5px 10px; }
+#chat_messages li { padding: 3px 8px; }
 #chat_messages li:nth-child(odd) { background: #f6f6f6; }
 
-
 aside {
-    font-size: .6em;
     float: left;
     position: fixed;
-    padding: .5em;
+    padding: .3em;
     bottom: 1em;
     left: 1em;
     border: 1px solid lightgrey;
@@ -103,16 +100,11 @@ aside {
 }
 #connected_users { list-style-type: none; }
 #connected_users li {
-    margin: 0.2em;
+    margin: 0.4em;
     font-weight: bold;
     color: slategrey;
-    font-size: 1.3em;
+    font-size: .8em;
 }
-
-
-/****** dynamic style ******/
-@media screen and (max-width : 490px) {
-
-
-}
-
+#connected_users li span.online { color: green; }
+#connected_users li span.offline { color: red; }
+#connected_users li span.typing { color: dodgerblue; }

@@ -33,6 +33,17 @@ module.exports = Backbone.Model.extend({
                     //trigger a chatMessage event that will be caught by the room
                     self.trigger('chatMessage', self.get('username'), msg);
                 });
+                self.socket.on('typing', function() {
+                    //trigger a chatMessage event that will be caught by the room
+                    self.set('status', 'typing...');
+                    self.trigger('updateUsersList');
+                });
+                self.socket.on('stopTyping', function() {
+                    //trigger a chatMessage event that will be caught by the room
+                    self.set('status', 'online');
+                    self.trigger('updateUsersList');
+                });
+
                 self.socket.on('disconnect', function() {
                     //trigger a chatMessage event that will be caught by the room
                     self.trigger('disconnect', self);
@@ -47,8 +58,6 @@ module.exports = Backbone.Model.extend({
         var self = this;
         //delete session from DB
         db.deleteSession (self.username, function () {
-            //emit event that will delete the user from the room collection
-            //self.trigger('logout', self);
             //disconnect the user socket
             socket.disconnect();
         });

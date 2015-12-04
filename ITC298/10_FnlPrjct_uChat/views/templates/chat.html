@@ -5,14 +5,14 @@
 
 <script type="text/html" id="user-template">
     <% list.forEach(function(user) { %>
-        <li> <%= user.username %>: <span><%= user.status %></span></li>
+        <li> <%= user.username %>: <span class="<%= user.status %>"><%= user.status %></span></li>
     <% }) %>
 </script>
 <!-- end templates -->
 
 
     <div id="chat">
-        <div id="welcome">Welcome <span>{{username}}</span>! You are now connected</div>
+        <!--<div id="welcome">Welcome <span>{{username}}</span>! You are now connected</div>-->
 
         <ul id="chat_messages">
             <!--loaded content from roomCollection-->
@@ -28,7 +28,6 @@
     <button id="logout">log out</button>
 
     <aside>
-        Connected users:
         <ul id="connected_users">
             <!--loaded content from messagesCollection-->
         </ul>
@@ -59,11 +58,19 @@
                 chatHistory.append(previousChatMessages);
             });
         }
-
         //when history has been loaded, register for new messages
-        //when receive a chatMessage display it
+        //when receive a chatMessage or a serviceMessage display them
         socket.on('chatMessage', function(username, msg){
-            console.log(msg);
+            //console.log(msg);
+            var messageTemplate = _.template( $("#chatMessage-template").html() );
+            var chatMessage = messageTemplate({
+                username: username,
+                msg: msg
+            });
+            $('#chat_messages').append(chatMessage);
+        });
+        socket.on('serviceMessage', function(username, msg){
+            //console.log(msg);
             var messageTemplate = _.template( $("#chatMessage-template").html() );
             var chatMessage = messageTemplate({
                 username: username,
@@ -82,20 +89,28 @@
         return false;
     });
 
-//    $( "#chat_input_panel" ).keypress(function() {
-//        console.log( 'typing' );
-//    });
+    var typing;
+    function keepTyping () {
+        typing = setTimeout(function () {
+            socket.emit('stopTyping');
+        }, 500);
+    }
+    //set status typing while keypress
+    $( "#chat_input_panel" ).keypress(function() {
+        clearTimeout(typing);
+        socket.emit('typing');
+        keepTyping();
+    });
 
     //when the list of connected users (roomCollection) changes, update the list
     socket.on('updateUsersList', function(room) {
-        console.log(room);
+        //console.log(room);
         var userTemplate = _.template( $("#user-template").html() );
         var userList = userTemplate({ list: room });
         $('#connected_users').html(userList);
     });
 
     $('#logout').on('click', function(){
-        //socket.emit('logout');
         location.assign("/logout");
     });
 

@@ -53,7 +53,6 @@ var conversation = new MessagesCollection();
 conversation.listenTo(room, "chatMessage", conversation.appendMsg);
 
 
-
 //set up the socket io server
 var io = require('socket.io')(server.listener);
 
@@ -69,17 +68,8 @@ io.on('connection', function(socket){
         user.verify(userData, function(err, authenticated) {
             if (err) { console.error(err); }
             if (authenticated) {
-                //if (room.connectedUsers.indexOf(userData.username) < 0) {
-                //if the user was not already connected
                 room.connectUser(user);
-                //}
-                //else {
-                //    //otherwise re-add user to chat, without fuss
-                //    room.rejoin(user);
-                //}
-            }
-            //if user not authenticated log out
-            else {
+            } else {
                 user.disconnectUser(socket);
             }
         });

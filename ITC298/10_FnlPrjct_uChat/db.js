@@ -19,7 +19,7 @@ module.exports = {
                 });
             },
             function(done) {
-                db.run("CREATE TABLE IF NOT EXISTS t_users (username, pwd, email, chat_history);", function() {
+                db.run("CREATE TABLE IF NOT EXISTS t_users (username, pwd, email);", function() {
                     done();
                 });
             },
@@ -69,7 +69,7 @@ module.exports = {
     },
     insertUser: function(userData, done) {
         done = done || function(){};
-        db.run("INSERT INTO t_users VALUES ($username, $pwd, $email, '');", userData, function (err) {
+        db.run("INSERT INTO t_users VALUES ($username, $pwd, $email);", userData, function (err) {
             if (err) { console.error(err); }
             done();
         });
